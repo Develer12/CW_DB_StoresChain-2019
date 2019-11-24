@@ -1,0 +1,22 @@
+<PRODUCTS>
+    <PRODUCT>
+        <Prod_Num>111111111111</Prod_Num>
+        <Prod_Id>0843251726618</Prod_Id>
+        <Prod_Name>MOHNICDQSBTYK</Prod_Name>
+        <Type_Prod_Id>75</Type_Prod_Id>
+        <Price_Purchase>337.00</Price_Purchase>
+        <Price_Sell>505.50</Price_Sell>
+        <Weight>377</Weight>
+        <Volume>1559</Volume>
+    </PRODUCT>
+    <PRODUCT>
+        <Prod_Num>1111111111112</Prod_Num>
+        <Prod_Id>8859342031427</Prod_Id>
+        <Prod_Name>OHFPGDYKSMNWV</Prod_Name>
+        <Type_Prod_Id>19</Type_Prod_Id>
+        <Price_Purchase>568.00</Price_Purchase>
+        <Price_Sell>852.00</Price_Sell>
+        <Weight>496</Weight>
+        <Volume>2012</Volume>
+    </PRODUCT>
+</PRODUCTS>     
