@@ -21,7 +21,7 @@ RESTORE DATABASE FILELISTONLY
 ------------------------------------------------------------------------------------------------------------
 
 --Sql query to xml
-SELECT * from PRODUCTS
+SELECT Prod_Id, Prod_Name, Type_Prod_Id, Price_Purchase, Price_Sell, Weight, Volume from PRODUCTS
 	FOR XML PATH('PRODUCT'), ROOT('PRODUCTS'); --Problem with Prod_Name, need to delete spaces
 
 --to use xp_cmdshell
@@ -37,7 +37,7 @@ DECLARE @sqlStr VARCHAR(1000)
 DECLARE @sqlCmd VARCHAR(1000)
 
 SET @fileName = 'D:\Subject\BD_COURSE\backups\STORES_CHAIN-Prod.xml'
-SET @sqlStr = 'USE STORES_CHAIN; SELECT * from PRODUCTS FOR XML PATH(''PRODUCT''), ROOT(''PRODUCTS'') '
+SET @sqlStr = 'USE STORES_CHAIN; SELECT Prod_Id, Prod_Name, Type_Prod_Id, Price_Purchase, Price_Sell, Weight, Volume from PRODUCTS FOR XML PATH(''PRODUCT''), ROOT(''PRODUCTS'') '
 SET @sqlCmd = 'bcp "' + @sqlStr + '" queryout ' + @fileName + ' -w -T'
 EXEC xp_cmdshell @sqlCmd;
 
