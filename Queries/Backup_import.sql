@@ -11,8 +11,8 @@ Backup database STORES_CHAIN
 
 USE master
 GO
---Restore (not working)
-RESTORE DATABASE FILELISTONLY
+--Restore
+RESTORE DATABASE STORES_CHAIN
     FROM disk = 'D:\Subject\BD_COURSE\backups\STORES_CHAIN.bak'
 		WITH replace;
 
@@ -57,6 +57,6 @@ FROM (SELECT CAST(MY_XML AS xml)
       FROM OPENROWSET(BULK 'D:\Subject\BD_COURSE\backups\Import.xml', SINGLE_BLOB) AS T(MY_XML)) AS T(MY_XML)
       CROSS APPLY MY_XML.nodes('PRODUCTS/PRODUCT') AS MY_XML (PRODUCT);
 
-
+--------------------------------------------------------------------------------------
 select * from PRODUCTS where Prod_Id = '1111111111111' or Prod_Id = '1111111111112'
 delete from PRODUCTS where Prod_Id = '1111111111111' or Prod_Id = '1111111111112'
