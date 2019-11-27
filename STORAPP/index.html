@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Yeah mr krabs</title>
+  </head>
+<body>
+<button onclick="get_tab()">Update</button>
+<hr/>
+<br/>
+<div style="height:500px;width:70%; overflow : auto;;" id="out_pulp"></div>
+<hr/>
+<label>
+    <input name="newPulpitData" id="id" type="number" placeholder="Id">
+</label>
+<br/>
+<br/>
+<section id="errors" style="color: red; font-size: 20px;"></section>
+<button id="close-error" style="display: none;" onclick="closeError()">Close</button>
+
+<script>
+    let n = 0;
+    let but;
+    const LINK = 'http://localhost:3000/api/pulpits';
+    async function get_tab()
+    {
+      let i = 0;
+      let container = document.getElementById('out_pulp');
+      container.innerHTML = '';
+      let load = document.createElement('div');
+      load.innerHTML = `<span> LOADING... </span>`;
+      container.append(load, document.createElement('br'));
+      fetch(LINK).then(res => res.json()).then(res =>
+      {
+        n++;
+        checkErrors(res);
+        let container = document.getElementById('out_pulp');
+        container.innerHTML = '';
+        res.forEach(prod =>
+        {
+          i++;
+          if(i==1)
+            load.remove();
+          let pulp = document.createElement('div');
+          pulp.innerHTML = `<span>|${prod.Prod_Id}|${prod.Prod_Name}|${prod.Prod_Type}|${prod.Depart}|${prod.Price_Purchase}|${prod.Price_Sell}|${prod.Weight}|${prod.Volume}| </span>`;
+          container.append(pulp, document.createElement('br'));
+        });
+        but = document.createElement('div');
+        but.innerHTML = `<button onclick="get_tab()">More</button>`;
+        container.append(but, document.createElement('br'));
+      });
+      if(n>1)
+        but.remove();
+    }
+
+
+    function checkErrors(res)
+    {
+      if (res.error)
+      {
+        document.getElementById('errors').innerText = res.error;
+        document.getElementById('close-error').style.display = 'block';
+      }
+    }
+    function closeError()
+    {
+      document.getElementById('errors').innerText = '';
+      document.getElementById('close-error').style.display = 'none';
+    }
+</script>
+</body>
+</html>
