@@ -17,10 +17,10 @@ class DB {
         }).catch(err => console.log('Connection Failed: ', err));
     }
 
-    Get(tab)
+    Get(tab, end, start)
     {
         //return connectionPool.then(pool => pool.query(`Exec SProdOrder 'byType'`));
-        return connectionPool.then(pool => pool.query(`Exec SProdOrder 'byType', 1000, 0`));
+        return connectionPool.then(pool => pool.query(`Exec SProdOrder 'byBar', ${end}, ${start}`));
     }
 
     Update(tab, fields)

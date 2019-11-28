@@ -24,39 +24,17 @@ app.get('/', (req, res) =>
     res.sendFile(__dirname + '/index.html');
 });
 
-app.get('/api/faculties', (req, res) =>
-{
-    console.log('Get faculties');
-    getHand('FACULTY', req, res);
-});
-
-app.get('/api/pulpits', (req, res) =>
+app.get('/api/prod/:end/:st', (req, res) =>
 {
     console.log('Get pulpits');
     getHand('PRODUCTS', req, res);
 });
 
-app.get('/api/subjects', (req, res) =>
-{
-    console.log('Get subjects');
-    getHand('SUBJECT', req, res);
-});
 
-app.get('/api/auditortype', (req, res) =>
-{
-    console.log('Get Auditorium Type');
-    getHand('AUDITORIUM_TYPE', req, res);
-});
-
-app.get('/api/auditor', (req, res) =>
-{
-    console.log('Get Auditorium');
-    getHand('AUDITORIUM', req, res);
-});
 
 function getHand(tab, req, res)
 {
-    DB.Get(tab).then(records =>
+    DB.Get(tab, req.params.end, req.params.st).then(records =>
     {res.json(records.recordset);}).catch(error =>
         {
             res.statusCode = 400;

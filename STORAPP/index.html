@@ -19,34 +19,56 @@
 <button id="close-error" style="display: none;" onclick="closeError()">Close</button>
 
 <script>
-    let n = 0;
     let but;
-    const LINK = 'http://localhost:3000/api/pulpits';
+    let end = 1000, st = 0;
+
+    function NPage()
+    {
+      st+=1000; end+=1000;
+      get_tab();
+    }
+
+    function PrPage(e)
+    {
+      if((st-1000)<0 || (end-1000)<=0  || (end-1000)<=st) //Problem in there
+      {st=st; end=end;}
+      else
+        st-=1000; end-=1000;
+      get_tab();
+    }
+
+
+    const prodLINK = 'http://localhost:3000/api/prod';
     async function get_tab()
     {
-      let i = 0;
       let container = document.getElementById('out_pulp');
       container.innerHTML = '';
       let load = document.createElement('div');
       load.innerHTML = `<span> LOADING... </span>`;
       container.append(load, document.createElement('br'));
+
+      let LINK = `${prodLINK}/${end}/${st}`;
+
       fetch(LINK).then(res => res.json()).then(res =>
       {
-        n++;
         checkErrors(res);
         let container = document.getElementById('out_pulp');
         container.innerHTML = '';
+
+        let table = document.createElement('table');
+        table.setAttribute('border', 1);
+        table.innerHTML = `<tr><td>BarCode</td><td>Name</td><td>Type</td><td>Department</td><td>Purchase Price</td><td>Sell Price</td><td>Weight</td><td>Volume</td></tr>`;
+
         res.forEach(prod =>
         {
-          i++;
-          if(i==1)
-            load.remove();
-          let pulp = document.createElement('div');
-          pulp.innerHTML = `<span>|${prod.Prod_Id}|${prod.Prod_Name}|${prod.Prod_Type}|${prod.Depart}|${prod.Price_Purchase}|${prod.Price_Sell}|${prod.Weight}|${prod.Volume}| </span>`;
-          container.append(pulp, document.createElement('br'));
+          load.remove();
+          let pulp = document.createElement('tr');
+          pulp.innerHTML = `<td>${prod.Prod_Id}</td><td>${prod.Prod_Name}</td><td>${prod.Prod_Type}</td><td>${prod.Depart}</td><td>${prod.Price_Purchase}</td><td>${prod.Price_Sell}</td><td>${prod.Weight}</td><td>${prod.Volume}</td>`;
+          table.append(pulp);
         });
+        container.append(table);
         but = document.createElement('div');
-        but.innerHTML = `<button onclick="get_tab()">More</button>`;
+        but.innerHTML = `<button onclick="PrPage()">Previos</button><button onclick="NPage()">Next</button>`;
         container.append(but, document.createElement('br'));
       });
       if(n>1)
