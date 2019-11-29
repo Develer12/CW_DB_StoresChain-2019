@@ -5,7 +5,7 @@
     <title>Yeah mr krabs</title>
   </head>
 <body>
-<button onclick="get_tab()">Update</button>
+<button onclick="get_tab()">Show PRODUCTS</button>
 <hr/>
 <br/>
 <div style="height:500px;width:70%; overflow : auto;;" id="out_pulp"></div>
@@ -21,6 +21,7 @@
 <script>
     let but;
     let end = 1000, st = 0;
+    let order = 'byName';
 
     function NPage()
     {
@@ -37,6 +38,11 @@
       get_tab();
     }
 
+    function TagOrder(elem)
+    {
+      order=elem.id;
+      get_tab();
+    }
 
     const prodLINK = 'http://localhost:3000/api/prod';
     async function get_tab()
@@ -47,7 +53,7 @@
       load.innerHTML = `<span> LOADING... </span>`;
       container.append(load, document.createElement('br'));
 
-      let LINK = `${prodLINK}/${end}/${st}`;
+      let LINK = `${prodLINK}/${end}/${st}/${order}`;
 
       fetch(LINK).then(res => res.json()).then(res =>
       {
@@ -57,7 +63,16 @@
 
         let table = document.createElement('table');
         table.setAttribute('border', 1);
-        table.innerHTML = `<tr><td>BarCode</td><td>Name</td><td>Type</td><td>Department</td><td>Purchase Price</td><td>Sell Price</td><td>Weight</td><td>Volume</td></tr>`;
+        table.innerHTML = `<tr>
+                              <td id="byBar" onClick="TagOrder(this)">BarCode</td>
+                              <td id="byName" onClick="TagOrder(this)">Name</td>
+                              <td id="byType" onClick="TagOrder(this)">Type</td>
+                              <td>Department</td>
+                              <td>Purchase Price</td>
+                              <td>Sell Price</td>
+                              <td>Weight</td>
+                              <td>Volume</td>
+                           </tr>`;
 
         res.forEach(prod =>
         {

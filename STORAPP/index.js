@@ -24,17 +24,21 @@ app.get('/', (req, res) =>
     res.sendFile(__dirname + '/index.html');
 });
 
-app.get('/api/prod/:end/:st', (req, res) =>
+app.get('/api/prod/:end/:st/:order', (req, res) =>
 {
-    console.log('Get pulpits');
+    console.log('Get PRODUCTS');
     getHand('PRODUCTS', req, res);
 });
 
-
+app.get('/api/basket/:end/:st/:order', (req, res) =>
+{
+    console.log('Get PRODUCTS');
+    getHand('PRODUCTS', req, res);
+});
 
 function getHand(tab, req, res)
 {
-    DB.Get(tab, req.params.end, req.params.st).then(records =>
+    DB.Get(tab, req.params.end, req.params.st, req.params.order).then(records =>
     {res.json(records.recordset);}).catch(error =>
         {
             res.statusCode = 400;
