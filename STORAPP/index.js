@@ -1,8 +1,12 @@
 const sql = require('mssql');
 const express = require('express');
-var bodyParser = require('body-parser')
+const fs = require('fs');
+var bodyParser = require('body-parser');
+//DB handler
 const Db = require('./queries');
 const DB = new Db();
+
+
 
 const PORT = 3000;
 const HOST = 'localhost';
@@ -22,6 +26,31 @@ const server = app.listen(PORT, HOST, () =>
 app.get('/', (req, res) =>
 {
     res.sendFile(__dirname + '/index.html');
+});
+
+//-----Image Handler------
+app.get('/ResHandler/:name/:ext', (req, res) =>
+{
+    let Name = req.params.name;
+    let Ext = req.params.ext;
+    switch (Ext)
+    {
+      case 'png':
+        res.writeHead(200, {'Content-Type' : `image/${Ext}`});
+        res.end(fs.readFileSync(`${__dirname}/resourse/img/${Name}.${Ext}`));
+        break;
+      case 'js':
+        res.writeHead(200, {'Content-Type' : 'text/javascript; charset=utf-8'});
+        res.end(fs.readFileSync(`${__dirname}/resourse/js/${Name}.${Ext}`));
+        break;
+      case 'js':
+        res.writeHead(200, {'Content-Type' : 'text/css; charset=utf-8'});
+        res.end(fs.readFileSync(`${__dirname}/resourse/css/${Name}.${Ext}`));
+        break;
+      default:
+        res.write("File not found");
+        res.end();
+    }
 });
 
 app.get('/api/prod/:end/:st/:order', (req, res) =>
