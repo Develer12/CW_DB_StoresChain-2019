@@ -20,7 +20,7 @@ class DB {
     Get(tab, end, start, order)
     {
         //return connectionPool.then(pool => pool.query(`Exec SProdOrder 'byType'`));
-        return connectionPool.then(pool => pool.query(`Exec SProdOrder '${order}', ${end}, ${start}`));
+        return connectionPool.then(pool => pool.query(`Exec ${tab} ${order} ${end}, ${start}`));
     }
 
     Update(tab, fields)

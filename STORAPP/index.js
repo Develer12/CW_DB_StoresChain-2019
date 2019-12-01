@@ -43,7 +43,7 @@ app.get('/ResHandler/:name/:ext', (req, res) =>
         res.writeHead(200, {'Content-Type' : 'text/javascript; charset=utf-8'});
         res.end(fs.readFileSync(`${__dirname}/resourse/js/${Name}.${Ext}`));
         break;
-      case 'js':
+      case 'css':
         res.writeHead(200, {'Content-Type' : 'text/css; charset=utf-8'});
         res.end(fs.readFileSync(`${__dirname}/resourse/css/${Name}.${Ext}`));
         break;
@@ -53,21 +53,19 @@ app.get('/ResHandler/:name/:ext', (req, res) =>
     }
 });
 
-app.get('/api/prod/:end/:st/:order', (req, res) =>
+app.get('/api/:tab/:end/:st/:order', (req, res) =>
 {
-    console.log('Get PRODUCTS');
-    getHand('PRODUCTS', req, res);
+    console.log('Get Tab');
+    getHand(req, res);
 });
 
-app.get('/api/basket/:end/:st/:order', (req, res) =>
-{
-    console.log('Get PRODUCTS');
-    getHand('PRODUCTS', req, res);
-});
 
-function getHand(tab, req, res)
+function getHand(req, res)
 {
-    DB.Get(tab, req.params.end, req.params.st, req.params.order).then(records =>
+    let o = req.params.order;
+    if(o == 'no') o = ' ';
+    else o = "'"+o+"',";
+    DB.Get(req.params.tab, req.params.end, req.params.st, o).then(records =>
     {res.json(records.recordset);}).catch(error =>
         {
             res.statusCode = 400;
