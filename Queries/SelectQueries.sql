@@ -70,32 +70,48 @@ End;
 --Find Product by BarCode
 go
 Create Procedure FindProd
-@BarC char(13)
+@BarC char(13),
+	@end int,
+	@start int
 AS
 Begin
-	SELECT Prod_Id, Prod_Name, Prod_Type,Depart,Price_Purchase,Price_Sell,Weight,Volume FROM PRODUCTS p 
-	LEFT OUTER JOIN
-	PRODUCT_TYPE  t ON t.Prod_Type_Id = p.Type_Prod_Id
-	LEFT OUTER JOIN
-	DEPARTMENTS d ON d.Dep_Id = t.Id_Dep
-	WHERE Prod_Id = @BarC;
+	WITH num_row AS
+	(
+		SELECT row_number() OVER (ORDER BY Prod_Name) as nom , 		
+		Prod_Id, Prod_Name, Prod_Type,Depart,Price_Purchase,Price_Sell,Weight,Volume FROM PRODUCTS p 
+		LEFT OUTER JOIN
+		PRODUCT_TYPE  t ON t.Prod_Type_Id = p.Type_Prod_Id
+		LEFT OUTER JOIN
+		DEPARTMENTS d ON d.Dep_Id = t.Id_Dep
+		WHERE Prod_Id = @BarC
+	) 
+	SELECT * FROM num_row
+	WHERE nom BETWEEN @start AND @end;
 End;
 
 
 --Output user basket
 go
 Create Procedure OutBasket
-	@User nvarchar(50)
+	@User nvarchar(50),
+	@end int,
+	@start int
 AS
 Begin
-	SELECT Prod_Id, Prod_Name, Prod_Type,Depart,Price_Purchase,Price_Sell,Weight,Volume FROM PRODUCTS p 
-	LEFT OUTER JOIN
-	PRODUCT_TYPE  t ON t.Prod_Type_Id = p.Type_Prod_Id
-	LEFT OUTER JOIN
-	DEPARTMENTS d ON d.Dep_Id = t.Id_Dep
-	Right OUTER JOIN
-	USER_BASKET u ON u.Product = p.Prod_Num
-	WHERE Id_User = @User;
+	WITH num_row AS
+	(
+		SELECT row_number() OVER (ORDER BY Prod_Name) as nom , 		
+		Prod_Id, Prod_Name, Prod_Type,Depart,Price_Purchase,Price_Sell,Weight,Volume FROM PRODUCTS p 
+		LEFT OUTER JOIN
+		PRODUCT_TYPE  t ON t.Prod_Type_Id = p.Type_Prod_Id
+		LEFT OUTER JOIN
+		DEPARTMENTS d ON d.Dep_Id = t.Id_Dep
+		Right OUTER JOIN
+		USER_BASKET u ON u.Product = p.Prod_Num
+		WHERE Id_User = @User
+	) 
+	SELECT * FROM num_row
+	WHERE nom BETWEEN @start AND @end;
 End;
 
 
