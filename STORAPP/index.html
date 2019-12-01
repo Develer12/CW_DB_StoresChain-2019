@@ -10,28 +10,40 @@
       <img title="Products list" id="SProdOrder" onclick="TagTab(this)" src="http://localhost:3000/ResHandler/prod/png" class="Icosocial">
       <img title="Employees list" id="SEmpl" onclick="TagTab(this)" src="http://localhost:3000/ResHandler/empl/png" class="Icosocial">
       <img title="Stores list" id="SStore" onclick="TagTab(this)" src="http://localhost:3000/ResHandler/store/png" class="Icosocial">
-
+      <img width="64" height="64"title="User basket" id="OutBasket" onclick="STagTab(this)" src="http://localhost:3000/ResHandler/basket/png" class="Icosocial">
+      <img title="BarCode search" id="FindProd" onclick="STagTab(this)" src="http://localhost:3000/ResHandler/barcode/png" class="Icosocial">
+      <div id="Search"></div>
   </div>
   <div>
-      <p class="Big_tit">STORES CHAIN</p>
-  </div>
-<div style="height:500px;width:70%; overflow:auto; border:10px; " id="out_pulp"></div>
-<hr/>
-<label>
-    <input name="newPulpitData" id="id" type="number" placeholder="Id">
-</label>
-<br/>
-<br/>
-<section id="errors" style="color: red; font-size: 20px;"></section>
-<button id="close-error" style="display: none;" onclick="closeError()">Close</button>
+      <div>
+          <p class="Big_tit">STORES CHAIN</p>
+      </div>
+      <div style="height:500px;" id="out_pulp"></div>
+      <hr/>
+      <div class="itemimg">
+        <img title="Add" id="Add"  src="http://localhost:3000/ResHandler/add/png">
+        <img title="Delete" id="Del"  src="http://localhost:3000/ResHandler/del/png">
+        <img title="Update" id="Update"  src="http://localhost:3000/ResHandler/update/png">
+      </div>
+      <br/>
 
-<div class="D_hat">
-    <a href="https://github.com/Develer12/CW_DB_StoresChain-2019">
-        <img src="http://localhost:3000/ResHandler/github-logo/png" />
-    </a>
-    by Develer12 (Matsiukh Arseni) @2019
-    <br/>
-</div>
+      <br/>
+      <br/>
+      <section id="errors" style="color: red; font-size: 20px;"></section>
+      <button id="close-error" style="display: none;" onclick="closeError()">Close</button>
+  </div>
+
+  <div class="D_hat">
+      <a href="https://github.com/Develer12/CW_DB_StoresChain-2019">
+          <img src="http://localhost:3000/ResHandler/github-logo/png" />
+      </a>
+      by Develer12 (Matsiukh Arseni) @2019
+      <img id="ExProdtoXml" title="Import xml" onclick="Export(this)" src="http://localhost:3000/ResHandler/xml/png" class="IcoSearch">
+      <img id="ExDB" title="Restore DB" onclick="Export(this)" src="http://localhost:3000/ResHandler/db/png"  class="IcoSearch">
+      <br/>
+
+
+  </div>
 
 <script src="http://localhost:3000/ResHandler/index/js"></script>
 </body>

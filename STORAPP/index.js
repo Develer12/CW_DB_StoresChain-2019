@@ -73,6 +73,20 @@ function getHand(req, res)
         });
 }
 
+//-----EXPORT------
+app.get('/export/:type', (req, res) =>
+{
+    console.log('Export');
+    var filePath = '../backups/STORES_CHAIN.bak';
+    if (fs.existsSync(filePath) && req.params.type =='ExDB')
+      fs.unlinkSync(filePath);
+    DB.Export(req.params.type).catch(error =>
+    {
+        res.statusCode = 400;
+        res.json({error: String(error)});
+    });
+});
+
 //-----POST------
 app.post('/api/faculties', (req, res) =>
 {

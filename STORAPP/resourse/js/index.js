@@ -2,6 +2,8 @@ let but;
 let end = 100, st = 0;
 let order, Tab = '';
 let defTR;
+let Search_T = '';
+let fsearch;
 
 function NPage()
 {
@@ -9,12 +11,10 @@ function NPage()
   get_tab();
 }
 
-function PrPage(e)
+function PrPage()
 {
-  if((st-100)<0 || (end-100)<=0  || (end-100)<=st) //Problem in there
-  {st=st; end=end;}
-  else
-    st-=100; end-=100;
+  if(end>100 || st>0)
+    {st-=100; end-=100;}
   get_tab();
 }
 
@@ -24,8 +24,76 @@ function TagOrder(elem)
   get_tab();
 }
 
+function STagTab(elem)
+{
+  document.getElementById('out_pulp').innerHTML='';
+  defTR='';
+  end = 100, st = 0;
+  Tab = elem.id;
+  let container = document.getElementById('Search');
+  container.innerHTML = '';
+  let load = document.createElement('div');
+  load.innerHTML = `<input type="text" id="input" onkeyup="TSearch()" class="IcoSearch">`;
+  container.append(load);
+}
+
+function TSearch()
+{
+  Search_T = document.getElementById('input').value;
+  if (Search_T == '')
+  {
+    let container = document.getElementById('out_pulp');
+    container.innerHTML = '';
+    fsearch = document.createElement('div');
+    fsearch.innerHTML = `<span> Empty search field. Please, input something </span>`;
+    container.append(fsearch, document.createElement('br'));
+  }
+  else if(/[^[0-9]/.test(Search_T))
+  {
+    let container = document.getElementById('out_pulp');
+    container.innerHTML = '';
+    let load = document.createElement('div');
+    load.innerHTML = `<span> Not valid data </span>`;
+    container.append(load, document.createElement('br'));
+  }
+  else
+  {
+    switch (Tab)
+    {
+      case 'FindProd':
+        defTR = `<tr>
+        <td>BarCode</td>
+        <td>Name</td>
+        <td>Type</td>
+        <td>Department</td>
+        <td>Purchase Price</td>
+        <td>Sell Price</td>
+        <td>Weight</td>
+        <td>Volume</td>
+        </tr>`;
+        order = Search_T;
+      break;
+      case 'OutBasket':
+        defTR = `<tr>
+        <td>BarCode</td>
+        <td>Name</td>
+        <td>Type</td>
+        <td>Department</td>
+        <td>Purchase Price</td>
+        <td>Sell Price</td>
+        <td>Weight</td>
+        <td>Volume</td>
+        </tr>`;
+        order = Search_T;
+      break;
+    }
+    get_tab();
+  }
+}
+
 function TagTab(elem)
 {
+  document.getElementById('out_pulp').innerHTML='';
   defTR='';
   end = 100, st = 0;
   Tab = elem.id;
@@ -44,8 +112,6 @@ function TagTab(elem)
               </tr>`;
         order = 'byName';
       break;
-      case 'OutBasket':
-        break;
       case 'SStore':
           defTR = `<tr>
                     <td>Store</td>
@@ -58,8 +124,6 @@ function TagTab(elem)
                    </tr>`;
           order = 'no';
           break;
-      case 'SProd':
-            break;
       case 'SEmpl':
         defTR = `<tr>
                   <td>First Name</td>
@@ -84,6 +148,7 @@ const prodLINK = 'http://localhost:3000/api';
 async function get_tab()
 {
   let container = document.getElementById('out_pulp');
+  container.setAttribute('style','height:500px;display: inline-block; overflow:auto;');
   container.innerHTML = '';
   let load = document.createElement('div');
   load.innerHTML = `<span> LOADING... </span>`;
@@ -108,11 +173,11 @@ async function get_tab()
       {
         case 'SProdOrder': pulp.innerHTML = `<td>${row.Prod_Id}</td><td>${row.Prod_Name}</td><td>${row.Prod_Type}</td><td>${row.Depart}</td><td>${row.Price_Purchase}</td><td>${row.Price_Sell}</td><td>${row.Weight}</td><td>${row.Volume}</td>`;
           break;
-        case 'OutBasket':
+        case 'OutBasket': pulp.innerHTML = `<td>${row.Prod_Id}</td><td>${row.Prod_Name}</td><td>${row.Prod_Type}</td><td>${row.Depart}</td><td>${row.Price_Purchase}</td><td>${row.Price_Sell}</td><td>${row.Weight}</td><td>${row.Volume}</td>`;
           break;
         case 'SStore': pulp.innerHTML = `<td>${row.Name_Store}</td><td>${row.County}</td><td>${row.Town}</td><td>${row.Adress}</td><td>${row.Size}</td><td>${row.Type}</td><td>${row.Workers}</td>`;
             break;
-        case 'SProd':
+        case 'FindProd': pulp.innerHTML = `<td>${row.Prod_Id}</td><td>${row.Prod_Name}</td><td>${row.Prod_Type}</td><td>${row.Depart}</td><td>${row.Price_Purchase}</td><td>${row.Price_Sell}</td><td>${row.Weight}</td><td>${row.Volume}</td>`;
               break;
         case 'SEmpl': pulp.innerHTML = `<td>${row.Name_First}</td><td>${row.Name_Sec}</td><td>${row.Name_Father}</td><td>${row.Post}</td><td>${row.Sex}</td><td>${row.Age}</td><td>${row.Exp}</td>`+
                       `<td>${row.Name_Store}</td><td>${row.County}</td><td>${row.Town}</td><td>${row.Adress}</td>`;                  break;
@@ -124,10 +189,15 @@ async function get_tab()
     but.innerHTML = `<button onclick="PrPage()">Previos</button><button onclick="NPage()">Next</button>`;
     container.append(but, document.createElement('br'));
   });
-  if(n>1)
-    but.remove();
 }
 
+
+const exportLINK = 'http://localhost:3000/export';
+function Export(elem)
+{
+  let LINK = `${exportLINK}/${elem.id}`;
+  fetch(LINK);
+}
 
 function checkErrors(res)
 {
