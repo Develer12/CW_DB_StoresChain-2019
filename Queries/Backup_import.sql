@@ -1,7 +1,7 @@
 USE STORES_CHAIN
 GO
 
---Backup to course project folder(next do backup of data and log)
+--Backup to course project folder
 Backup database STORES_CHAIN 
 	to disk = 'D:\Subject\BD_COURSE\backups\STORES_CHAIN.bak';
 
