@@ -56,17 +56,29 @@ app.get('/ResHandler/:name/:ext', (req, res) =>
 
 app.post('/api/login', urlencodedParser, (req, res) =>
 {
+    let au;
     console.log('Log function');
-    let log = req.body.login;
-    let pass = req.body.password;
-    if(pass == '123' && log == 'admin')
-      res.sendFile(__dirname + '/index.html');
-    else
-      res.sendFile(__dirname + '/login.html');
+    if(!req.body.login && !req.body.password)
+      DB.Login(req.body.login, req.body.password)
+      .then(records =>
+          { au = ((records.recordset));})
+      .then(()=>
+          {
+              au = au.find(x => x.login).login;
+              console.log(au);
 
+              if(au == 1)
+                res.sendFile(__dirname + '/index.html');
+              else
+                res.sendFile(__dirname + '/login.html');
+          })
+      .catch(error =>
+          {
+              res.statusCode = 400;
+              res.json({error: String(error)});
+          });
+    else res.sendFile(__dirname + '/login.html');
 
-    console.log(log);
-    console.log(pass);
 });
 
 app.get('/api/:tab/:end/:st/:order', (req, res) =>

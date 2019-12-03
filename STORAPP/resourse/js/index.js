@@ -196,7 +196,7 @@ const exportLINK = 'http://localhost:3000/export';
 function Export(elem)
 {
   let LINK = `${exportLINK}/${elem.id}`;
-  fetch(LINK);
+  fetch(LINK).then(res => {checkErrors(res);});
 }
 
 
@@ -231,7 +231,7 @@ const importLINK = 'http://localhost:3000/import';
 function Import(elem)
 {
   let LINK = `${importLINK}/${elem.id}`;
-  fetch(LINK);
+  fetch(LINK).then(res => {checkErrors(res);});;
 }
 
 
