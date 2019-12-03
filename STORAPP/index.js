@@ -5,6 +5,7 @@ var bodyParser = require('body-parser');
 //DB handler
 const Db = require('./queries');
 const DB = new Db();
+const urlencodedParser = bodyParser.urlencoded({extended: false});
 
 
 
@@ -25,7 +26,7 @@ const server = app.listen(PORT, HOST, () =>
 //-----GET------
 app.get('/', (req, res) =>
 {
-    res.sendFile(__dirname + '/index.html');
+    res.sendFile(__dirname + '/login.html');
 });
 
 //-----Image Handler------
@@ -51,6 +52,21 @@ app.get('/ResHandler/:name/:ext', (req, res) =>
         res.write("File not found");
         res.end();
     }
+});
+
+app.post('/api/login', urlencodedParser, (req, res) =>
+{
+    console.log('Log function');
+    let log = req.body.login;
+    let pass = req.body.password;
+    if(pass == '123' && log == 'admin')
+      res.sendFile(__dirname + '/index.html');
+    else
+      res.sendFile(__dirname + '/login.html');
+
+
+    console.log(log);
+    console.log(pass);
 });
 
 app.get('/api/:tab/:end/:st/:order', (req, res) =>
@@ -80,7 +96,7 @@ app.get('/export/:type', (req, res) =>
     var filePath = '../backups/STORES_CHAIN.bak';
     if (fs.existsSync(filePath) && req.params.type =='ExDB')
       fs.unlinkSync(filePath);
-    DB.Export(req.params.type).catch(error =>
+    DB.Exp_Imp(req.params.type).catch(error =>
     {
         res.statusCode = 400;
         res.json({error: String(error)});
@@ -94,7 +110,7 @@ app.get('/import/:type', (req, res) =>
     var filePathDB = '../backups/STORES_CHAIN.bak';
     var filePathXML = '../backups/Import.xml';
     if ((fs.existsSync(filePathDB) && req.params.type =='ImDB') || (req.params.type =='ImProdfromXml' && fs.existsSync(filePathXML)))
-      DB.Export(req.params.type).catch(error =>
+      DB.Exp_Imp(req.params.type).catch(error =>
       {
           res.statusCode = 400;
           res.json({error: String(error)});

@@ -22,7 +22,7 @@ class DB {
         return connectionPool.then(pool => pool.query(`Exec ${tab} ${order} ${end}, ${start}`));
     }
 
-    Export(exec)
+    Exp_Imp(exec)
     {
         return connectionPool.then(pool => pool.query(`Exec ${exec}`));
     }
