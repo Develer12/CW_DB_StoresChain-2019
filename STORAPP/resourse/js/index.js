@@ -99,7 +99,7 @@ function TagTab(elem)
   Tab = elem.id;
   switch (Tab)
   {
-    case 'SProdOrder':
+    case 'SProdOrder': //NOT WORK DEPART, WEIGHT AND VOLUME
       defTR = `<tr>
                   <td id="byBar" onClick="TagOrder(this)">BarCode</td>
                   <td id="byName" onClick="TagOrder(this)">Name</td>
@@ -198,6 +198,42 @@ function Export(elem)
   let LINK = `${exportLINK}/${elem.id}`;
   fetch(LINK);
 }
+
+
+/*let xmlclick = 0;
+let file;
+const importLINK = 'http://localhost:3000/import';
+function Import(elem)
+{
+  if(elem.id=='ImXml')
+  {
+    let input = document.getElementById('XmlUp')
+    xmlclick++;
+    if(xmlclick == 1)
+    {
+      file = '';
+      input.click();
+      file = input.files[0];
+    }
+    if(xmlclick == 2) alert(file);
+    console.log(file);
+
+    xmlclick = (xmlclick==2) ? 0 : xmlclick;
+  }
+
+  //let LINK = `${importLINK}/${elem.id}`;
+  //fetch(LINK);
+}
+*/
+
+
+const importLINK = 'http://localhost:3000/import';
+function Import(elem)
+{
+  let LINK = `${importLINK}/${elem.id}`;
+  fetch(LINK);
+}
+
 
 function checkErrors(res)
 {

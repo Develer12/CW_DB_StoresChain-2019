@@ -26,7 +26,11 @@
         <img title="Update" id="Update"  src="http://localhost:3000/ResHandler/update/png">
       </div>
       <br/>
-
+      <form method="post" hidden="true" enctype="multipart/form-data">
+        <div>
+          <input type="file" style="opacity: 0;" id="XmlUp" accept=".xml">
+        </div>
+      </form>
       <br/>
       <br/>
       <section id="errors" style="color: red; font-size: 20px;"></section>
@@ -38,8 +42,10 @@
           <img src="http://localhost:3000/ResHandler/github-logo/png" />
       </a>
       by Develer12 (Matsiukh Arseni) @2019
-      <img id="ExProdtoXml" title="Import xml" onclick="Export(this)" src="http://localhost:3000/ResHandler/xml/png" class="IcoSearch">
-      <img id="ExDB" title="Restore DB" onclick="Export(this)" src="http://localhost:3000/ResHandler/db/png"  class="IcoSearch">
+      <img id="ExProdtoXml" title="Export Products to xml" onclick="Export(this)" src="http://localhost:3000/ResHandler/xml/png" class="IcoSearch">
+      <img id="ExDB" title="Export DB" onclick="Export(this)" src="http://localhost:3000/ResHandler/db/png"  class="IcoSearch">
+      <img  id="ImProdfromXml" title="Import Products from xml" onclick="Import(this)" src="http://localhost:3000/ResHandler/xml-add/png" class="IcoSearch">
+      <img id="ImDB" title="Restore DB" onclick="Import(this)" src="http://localhost:3000/ResHandler/db-2/png"  class="IcoSearch">
       <br/>
 
 

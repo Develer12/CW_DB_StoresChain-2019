@@ -87,6 +87,22 @@ app.get('/export/:type', (req, res) =>
     });
 });
 
+//-----IMPORT------
+app.get('/import/:type', (req, res) =>
+{
+    console.log('Import');
+    var filePathDB = '../backups/STORES_CHAIN.bak';
+    var filePathXML = '../backups/Import.xml';
+    if ((fs.existsSync(filePathDB) && req.params.type =='ImDB') || (req.params.type =='ImProdfromXml' && fs.existsSync(filePathXML)))
+      DB.Export(req.params.type).catch(error =>
+      {
+          res.statusCode = 400;
+          res.json({error: String(error)});
+      });
+    else if(!fs.existsSync(filePathDB)) console.log('BAK file to restore DB not exists');
+    else if(!fs.existsSync(filePathXML)) console.log('XML file to import products not exists');
+});
+
 //-----POST------
 app.post('/api/faculties', (req, res) =>
 {
