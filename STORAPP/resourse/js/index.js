@@ -28,6 +28,7 @@ function TagOrder(elem)
 
 function STagTab(elem)
 {
+  bd_butt.innerHTML = '';
   document.getElementById('out_pulp').innerHTML='';
   defTR='';
   end = 100, st = 0;
@@ -93,8 +94,15 @@ function TSearch()
   }
 }
 
+let bd_butt = document.getElementById('db_b');
 function TagTab(elem)
 {
+  bd_butt.innerHTML =
+      `
+      <img title="Add" id="Add"  onclick="Control_DB(this)" src="http://localhost:3000/ResHandler/add/png" class="IcoDB">
+      <img title="Delete" id="Del" onclick="Control_DB(this)" src="http://localhost:3000/ResHandler/del/png" class="IcoDB">
+      <img title="Update" id="Update" onclick="Control_DB(this)" src="http://localhost:3000/ResHandler/update/png" class="IcoDB">
+      `;
   document.getElementById('out_pulp').innerHTML='';
   defTR='';
   end = 100, st = 0;
@@ -191,6 +199,7 @@ async function get_tab()
     but.innerHTML = `<button onclick="PrPage()">Previos</button><button onclick="NPage()">Next</button>`;
     container.append(but, document.createElement('br'));
   });
+  sender.remove();
 }
 
 
@@ -227,6 +236,42 @@ function Import(elem)
   //fetch(LINK);
 }
 */
+
+let sender = ' ';
+function Control_DB(elem)
+{
+    fun = elem.id;
+    let db_c = document.getElementById('db_c');
+    sender = document.createElement('center');
+    if(Tab == 'SProdOrder')
+    {
+        if(fun == 'Add')
+        {
+          sender.innerHTML =
+          `<form>
+              <input class="TSearch" type="text" name="BarCode" placeholder="BarCode" onkeyup="TSearch()" class="IcoSearch">
+              <input class="TSearch" type="text" name="Name" placeholder="Name" onkeyup="TSearch()" class="IcoSearch">
+              <input class="TSearch" type="text" name="Type" placeholder="Type" onkeyup="TSearch()" class="IcoSearch">
+              <input class="TSearch" type="text" name="Department" placeholder="Department" onkeyup="TSearch()" class="IcoSearch">
+              <input class="TSearch" type="text" name="BarCode" placeholder="Purchase Price" onkeyup="TSearch()" class="IcoSearch">
+              <input class="TSearch" type="text" name="BarCode" placeholder="Sell Price" onkeyup="TSearch()" class="IcoSearch">
+              <input class="TSearch" type="text" name="BarCode" placeholder="Weight" onkeyup="TSearch()" class="IcoSearch">
+              <input class="TSearch" type="text" name="BarCode" placeholder="Volume" onkeyup="TSearch()" class="IcoSearch">
+              <input type="submit" value="Send" />
+           </form>`;
+        }
+        if(fun == 'Del')
+        {
+          sender.innerHTML =
+          `<form>
+              <input class="TSearch" type="text" name="BarCode" placeholder="BarCode" onkeyup="TSearch()" class="IcoSearch">
+              <input type="submit" value="Send" />
+           </form>`;
+        }
+    }
+     db_c.append(sender);
+
+}
 
 
 const importLINK = 'http://localhost:3000/import';
