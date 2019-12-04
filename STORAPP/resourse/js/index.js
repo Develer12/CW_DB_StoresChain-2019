@@ -4,6 +4,8 @@ let order, Tab = '';
 let defTR;
 let Search_T = '';
 let fsearch;
+let searchF = ' ';
+
 
 function NPage()
 {
@@ -32,9 +34,9 @@ function STagTab(elem)
   Tab = elem.id;
   let container = document.getElementById('Search');
   container.innerHTML = '';
-  let load = document.createElement('div');
-  load.innerHTML = `<input type="text" id="input" onkeyup="TSearch()" class="IcoSearch">`;
-  container.append(load);
+  searchF = document.createElement('div');
+  searchF.innerHTML = `<input class="TSearch" type="text" id="input" onkeyup="TSearch()" class="IcoSearch">`;
+  container.append(searchF);
 }
 
 function TSearch()
@@ -142,13 +144,13 @@ function TagTab(elem)
       break;
   }
   get_tab();
+  searchF.remove();
 }
 
 const prodLINK = 'http://localhost:3000/api';
 async function get_tab()
 {
   let container = document.getElementById('out_pulp');
-  container.setAttribute('style','height:500px;display: inline-block; overflow:auto;');
   container.innerHTML = '';
   let load = document.createElement('div');
   load.innerHTML = `<span> LOADING... </span>`;
@@ -231,9 +233,15 @@ const importLINK = 'http://localhost:3000/import';
 function Import(elem)
 {
   let LINK = `${importLINK}/${elem.id}`;
-  fetch(LINK).then(res => {checkErrors(res);});;
+  fetch(LINK).then(res => {checkErrors(res);});
 }
 
+function LogOut()
+{
+    console.log('User LogOut');
+    let LINK = 'http://localhost:3000/LogOut';
+    fetch(LINK).then(res => {checkErrors(res);});
+}
 
 function checkErrors(res)
 {

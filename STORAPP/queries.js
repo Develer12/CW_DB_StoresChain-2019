@@ -35,7 +35,7 @@ class DB {
     Update(tab, fields)
     {
         return connectionPool.then(pool =>
-          {
+        {
             const tab = tab + '_Id';
             if (!fields[tab] || !Number.isInteger(fields[tab]))
                 throw 'Problem with ID';

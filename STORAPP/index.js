@@ -54,11 +54,13 @@ app.get('/ResHandler/:name/:ext', (req, res) =>
     }
 });
 
+//-----Login------
 app.post('/api/login', urlencodedParser, (req, res) =>
 {
     let au;
     console.log('Log function');
-    if(!req.body.login && !req.body.password)
+
+    if(req.body.login && req.body.password)
       DB.Login(req.body.login, req.body.password)
       .then(records =>
           { au = ((records.recordset));})
@@ -79,6 +81,13 @@ app.post('/api/login', urlencodedParser, (req, res) =>
           });
     else res.sendFile(__dirname + '/login.html');
 
+});
+
+//-----LogOut------
+app.get('/LogOut', (req, res) =>
+{
+    console.log('User LogOut');
+    res.sendFile(__dirname + '/login.html');
 });
 
 app.get('/api/:tab/:end/:st/:order', (req, res) =>
