@@ -143,132 +143,22 @@ app.get('/import/:type', (req, res) =>
 //-----Control_DB (Add, Delete, Update)------
 app.post('/control/:fun/:exec', urlencodedParser, (req, res) =>
 {
-    let param = ' ';
+    let param = '';
     let json = req.body;
     let Exec = req.params.exec+req.params.fun;
     console.log(`${Exec} in DB`);
     for (key in json)
     {
-      param+=(json[key]+',');
+      if(key == 'BarCode')
+        param+=("'"+json[key]+"',");
+      else
+        param+=(json[key]+',');
     }
     param = param.slice(0, param.length-1);
     console.log(param);
-    /*
     DB.Control_DB(Exec, param).catch(error =>
     {
         res.statusCode = 400;
         res.json({error: String(error)});
     });
-    */
-});
-
-app.post('/api/pulpits', (req, res) =>
-{
-    console.log('Get pulpits');
-    postHand('PULPIT', req, res);
-});
-
-app.post('/api/subjects', (req, res) =>
-{
-    console.log('Get subjects');
-    postHand('SUBJECT', req, res);
-});
-
-app.post('/api/auditortype', (req, res) =>
-{
-    console.log('Get Auditorium Type');
-    postHand('AUDITORIUM_TYPE', req, res);
-});
-
-app.post('/api/auditor', (req, res) =>
-{
-    console.log('Get Auditorium');
-    postHand('AUDITORIUM', req, res);
-});
-
-function postHand()
-{
-    DB.Insert(object, req.body).then(record =>
-    {res.json(record.recordset[0]);}).catch(error =>
-    {
-        res.statusCode = 400;
-        res.json({error: String(error)});
-    });
-}
-
-//-----PUT------
-app.put('/api/faculties', (req, res) =>
-{
-    console.log('Get faculties');
-    putHand('FACULTY', req, res);
-});
-
-app.put('/api/pulpits', (req, res) =>
-{
-    console.log('Get pulpits');
-    putHand('PULPIT', req, res);
-});
-
-app.put('/api/subjects', (req, res) =>
-{
-    console.log('Get subjects');
-    putHand('SUBJECT', req, res);
-});
-
-app.put('/api/auditortype', (req, res) =>
-{
-    console.log('Get Auditorium Type');
-    putHand('AUDITORIUM_TYPE', req, res);
-});
-
-app.put('/api/auditor', (req, res) =>
-{
-    console.log('Get Auditorium');
-    putHand('AUDITORIUM', req, res);
-});
-
-function putHand()
-{
-    DB.Update(object, req.body).then(record =>
-    {res.json(record.recordset[0]);}).catch(error =>
-    {
-        res.statusCode = 400;
-        res.json({error: String(error)});
-    });
-}
-
-//-----DELETE------
-app.delete('/api/faculties/:xy', (req, res) =>
-{
-    let xy = req.params.xy;
-});
-
-app.delete('/api/pulpits/:xy', (req, res) =>
-{
-    let xy = req.params.xy;
-});
-
-app.delete('/api/subjects/:xy', (req, res) =>
-{
-    let xy = req.params.xy;
-});
-
-app.delete('/api/auditortype/:xy', (req, res) =>
-{
-    let xy = req.params.xy;
-});
-
-app.delete('/api/auditor/:xy', (req, res) =>
-{
-    let xy = req.params.xy;
-});
-
-app.get('/drop', (req, res) =>
-{
-
-});
-
-app.get('/create', (req, res) =>
-{
-
 });

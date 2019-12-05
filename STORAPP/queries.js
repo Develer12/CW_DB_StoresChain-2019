@@ -29,7 +29,7 @@ class DB {
 
     Login(log, pass)
     {
-      return connectionPool.then(pool => pool.query(`Login ${log}, ${pass}`));
+      return connectionPool.then(pool => pool.query(`Exec Login ${log}, ${pass}`));
     }
 
     Control_DB(exec, param)
