@@ -32,6 +32,11 @@ class DB {
       return connectionPool.then(pool => pool.query(`Login ${log}, ${pass}`));
     }
 
+    Control_DB(exec, param)
+    {
+      return connectionPool.then(pool => pool.query(`Exec ${exec} ${param}`));
+    }
+
     Update(tab, fields)
     {
         return connectionPool.then(pool =>

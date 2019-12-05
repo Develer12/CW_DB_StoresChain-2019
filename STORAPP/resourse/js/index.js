@@ -138,7 +138,7 @@ function TagTab(elem)
         defTR = `<tr>
                   <td>First Name</td>
                   <td>Second Name</td>
-                  <td>First Name</td>
+                  <td>Father Name</td>
                   <td>Post</td>
                   <td>Sex</td>
                   <td>Age</td>
@@ -237,40 +237,95 @@ function Import(elem)
 }
 */
 
+const controlLINK = 'http://localhost:3000/control';
 let sender = ' ';
 function Control_DB(elem)
 {
     fun = elem.id;
     let db_c = document.getElementById('db_c');
     sender = document.createElement('center');
+    db_c.innerHTML = '';
+    let LINK = `${controlLINK}/${fun}/${Tab}`;
     if(Tab == 'SProdOrder')
     {
         if(fun == 'Add')
         {
           sender.innerHTML =
-          `<form>
-              <input class="TSearch" type="text" name="BarCode" placeholder="BarCode" onkeyup="TSearch()" class="IcoSearch">
-              <input class="TSearch" type="text" name="Name" placeholder="Name" onkeyup="TSearch()" class="IcoSearch">
-              <input class="TSearch" type="text" name="Type" placeholder="Type" onkeyup="TSearch()" class="IcoSearch">
-              <input class="TSearch" type="text" name="Department" placeholder="Department" onkeyup="TSearch()" class="IcoSearch">
-              <input class="TSearch" type="text" name="BarCode" placeholder="Purchase Price" onkeyup="TSearch()" class="IcoSearch">
-              <input class="TSearch" type="text" name="BarCode" placeholder="Sell Price" onkeyup="TSearch()" class="IcoSearch">
-              <input class="TSearch" type="text" name="BarCode" placeholder="Weight" onkeyup="TSearch()" class="IcoSearch">
-              <input class="TSearch" type="text" name="BarCode" placeholder="Volume" onkeyup="TSearch()" class="IcoSearch">
-              <input type="submit" value="Send" />
+          `<form action="${LINK}" method="post">
+              <input class="TSearch" type="text" name="BarCode" placeholder="BarCode" class="IcoSearch">
+              <input class="TSearch" type="text" name="Name" placeholder="Name" class="IcoSearch">
+              <input class="TSearch" type="text" name="Type" placeholder="Type" class="IcoSearch">
+              <input class="TSearch" type="text" name="Purch" placeholder="Purchase Price" class="IcoSearch">
+              <input class="TSearch" type="text" name="Sell" placeholder="Sell Price" class="IcoSearch">
+              <input class="TSearch" type="text" name="Weight" placeholder="Weight" class="IcoSearch">
+              <input class="TSearch" type="text" name="Volume" placeholder="Volume" class="IcoSearch">
+              <input type="submit" value="Input" />
            </form>`;
         }
-        if(fun == 'Del')
+        else if(fun == 'Del')
         {
           sender.innerHTML =
-          `<form>
-              <input class="TSearch" type="text" name="BarCode" placeholder="BarCode" onkeyup="TSearch()" class="IcoSearch">
-              <input type="submit" value="Send" />
+          `<form action="${LINK}" method="post">
+              <input class="TSearch" type="text" name="BarCode" placeholder="BarCode"class="IcoSearch">
+              <input type="submit" value="Delete" />
            </form>`;
         }
+      }
+    if(Tab == 'SEmpl')
+    {
+        if(fun == 'Add')
+        {
+          sender.innerHTML =
+          `<form action="${LINK}" method="post">
+              <input class="TSearch" type="text" name="F_Name" placeholder="First Name	" class="IcoSearch">
+              <input class="TSearch" type="text" name="S_Name" placeholder="Second Name	" class="IcoSearch">
+              <input class="TSearch" type="text" name="Fa_Name" placeholder="Father Name	" class="IcoSearch">
+              <input class="TSearch" type="text" name="Post" placeholder="Post" class="IcoSearch">
+              <input class="TSearch" type="text" name="Sex" placeholder="Sex" class="IcoSearch">
+              <input class="TSearch" type="text" name="Age" placeholder="Age" class="IcoSearch">
+              <input class="TSearch" type="text" name="Exp" placeholder="Experience" class="IcoSearch">
+              <input class="TSearch" type="text" name="Store" placeholder="Store" class="IcoSearch">
+              <input class="TSearch" type="text" name="Country" placeholder="Country" class="IcoSearch">
+              <input class="TSearch" type="text" name="Town" placeholder="Town" class="IcoSearch">
+              <input class="TSearch" type="text" name="Addr" placeholder="Address" class="IcoSearch">
+              <input type="submit" value="Input" />
+          </form>`;
+      }
+      else if(fun == 'Del')
+      {
+          sender.innerHTML =
+          `<form action="${LINK}" method="post">
+              <input class="TSearch" type="text" name="BarCode" placeholder="BarCode" class="IcoSearch">
+              <input type="submit" value="Delete" />
+           </form>`;
+      }
+    }
+    if(Tab == 'SStore')
+    {
+        if(fun == 'Add')
+        {
+          sender.innerHTML =
+          `<form action="${LINK}" method="post">
+              <input class="TSearch" type="text" name="Store" placeholder="Store" class="IcoSearch">
+              <input class="TSearch" type="text" name="Country" placeholder="Country" class="IcoSearch">
+              <input class="TSearch" type="text" name="Town" placeholder="Town" class="IcoSearch">
+              <input class="TSearch" type="text" name="Addr" placeholder="Address" class="IcoSearch">
+              <input class="TSearch" type="text" name="Size" placeholder="Size" class="IcoSearch">
+              <input class="TSearch" type="text" name="Type" placeholder="Type" class="IcoSearch">
+              <input class="TSearch" type="text" name="Workers" placeholder="Workers" class="IcoSearch">
+              <input type="submit" value="Input" />
+          </form>`;
+      }
+      else if(fun == 'Del')
+      {
+          sender.innerHTML =
+          `<form action="${LINK}" method="post">
+              <input class="TSearch" type="text" name="BarCode" placeholder="BarCode" class="IcoSearch">
+              <input type="submit" value="Delete" />
+           </form>`;
+      }
     }
      db_c.append(sender);
-
 }
 
 

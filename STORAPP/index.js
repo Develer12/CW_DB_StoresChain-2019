@@ -140,11 +140,26 @@ app.get('/import/:type', (req, res) =>
     else if(!fs.existsSync(filePathXML)) console.log('XML file to import products not exists');
 });
 
-//-----POST------
-app.post('/api/faculties', (req, res) =>
+//-----Control_DB (Add, Delete, Update)------
+app.post('/control/:fun/:exec', urlencodedParser, (req, res) =>
 {
-    console.log('Get faculties');
-    postHand('FACULTY', req, res);
+    let param = ' ';
+    let json = req.body;
+    let Exec = req.params.exec+req.params.fun;
+    console.log(`${Exec} in DB`);
+    for (key in json)
+    {
+      param+=(json[key]+',');
+    }
+    param = param.slice(0, param.length-1);
+    console.log(param);
+    /*
+    DB.Control_DB(Exec, param).catch(error =>
+    {
+        res.statusCode = 400;
+        res.json({error: String(error)});
+    });
+    */
 });
 
 app.post('/api/pulpits', (req, res) =>
