@@ -11,7 +11,7 @@ Begin
 	WITH num_row AS
 	(
 		SELECT row_number() OVER (ORDER BY Name_First) as nom , 		
-		Name_First, Name_Sec, Name_Father, t.Post, Sex, Age, Exp, Name_Store,County, Town, Adress FROM EMPLOYEES p
+		Id_Empl, Name_First, Name_Sec, Name_Father, t.Post, Sex, Age, Exp, Name_Store,County, d.Depart FROM EMPLOYEES p
 		LEFT OUTER JOIN
 		POSTS  t ON t.Post_Id = p.Id_Post
 		LEFT OUTER JOIN
