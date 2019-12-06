@@ -248,7 +248,7 @@ function Control_DB(elem)
     let LINK = `${controlLINK}/${fun}/${Tab}`;
     if(Tab == 'SProdOrder')
     {
-        if(fun == 'Add')
+        if(fun == 'Add' || fun == 'Update')
         {
           sender.innerHTML =
           `<form action="${LINK}" method="post">
@@ -291,6 +291,24 @@ function Control_DB(elem)
               <input type="submit" value="Input" />
           </form>`;
       }
+      if(fun == 'Update')
+      {
+        sender.innerHTML =
+        `<form action="${LINK}" method="post">
+            <input class="TSearch" type="text" name="ID" placeholder="ID" class="IcoSearch">
+            <input class="TSearch" type="text" name="F_Name" placeholder="First Name" class="IcoSearch">
+            <input class="TSearch" type="text" name="S_Name" placeholder="Second Name" class="IcoSearch">
+            <input class="TSearch" type="text" name="Fa_Name" placeholder="Father Name" class="IcoSearch">
+            <input class="TSearch" type="text" name="Post" placeholder="Post" class="IcoSearch">
+            <input class="TSearch" type="text" name="Sex" placeholder="Sex" class="IcoSearch">
+            <input class="TSearch" type="text" name="Age" placeholder="Age" class="IcoSearch">
+            <input class="TSearch" type="text" name="Exp" placeholder="Experience" class="IcoSearch">
+            <input class="TSearch" type="text" name="Store" placeholder="Store" class="IcoSearch">
+            <input class="TSearch" type="text" name="Country" placeholder="Country" class="IcoSearch">
+            <input class="TSearch" type="text" name="Depart" placeholder="Department" class="IcoSearch">
+            <input type="submit" value="Input" />
+        </form>`;
+    }
       else if(fun == 'Del')
       {
           sender.innerHTML =

@@ -29,10 +29,34 @@ Begin
 	Delete from PRODUCTS where Prod_Id = @Prod_Num;
 End;
 
+
+--Update Products 
+go
+Create Procedure SProdOrderUpdate
+		@Prod_Id nvarchar(13),
+		@Prod_Name nvarchar(50),
+		@Type nvarchar(50),
+		@Depart nvarchar(30), 
+		@Price_Purchase numeric(6,2),
+		@Price_Sell numeric(6,2),
+		@Weight int,
+		@Volume int
+AS
+Begin
+	Update PRODUCTS
+	set Prod_Name = @Prod_Name,
+	Type_Prod_Id = (select Prod_Type_Id from PRODUCT_TYPE where Prod_Type = @Type and Id_Dep = (select Dep_Id from DEPARTMENTS where Depart = @Depart)),
+	Price_Purchase = @Price_Purchase,
+	Price_Sell = @Price_Sell,
+	Weight = @Weight,
+	Volume = @Volume
+	where Prod_Id = @Prod_Id;
+End;
+
 ----------------------------------------------------------------------------------------------
 ----------------------------------------------------------------------------------------------
 
---Insert inside Emploees 
+--Insert inside Employees 
 go
 Create Procedure SEmplAdd
     @Name_First nvarchar(50),
@@ -52,7 +76,7 @@ Begin
 End;
 
 
---Delete from Products 
+--Delete from Employees 
 go
 create Procedure SEmplDel
 		@Empl int
@@ -60,4 +84,33 @@ AS
 Begin
 	Delete from STORE_ADMIN where EMPL_Id = @Empl;
 	Delete from EMPLOYEES where Id_Empl = @Empl;
+End;
+
+--Update Employee
+go
+Create Procedure SEmplUpdate
+	@Empl int,
+    @Name_First nvarchar(50),
+    @Name_Sec nvarchar(50),
+    @Name_Father nvarchar(50),
+	@Id_Post nvarchar(50),
+    @Sex nchar(1), 
+    @Age int,
+    @Exp int,
+    @Id_Store nvarchar(30),
+	@Country nvarchar(30),
+    @Id_Dep nvarchar(30)
+AS
+Begin
+	Update EMPLOYEES
+	SET Name_First = @Name_First,
+	Name_Sec = @Name_Sec,
+	Name_Father = @Name_Father,
+	Sex = @Sex,
+	Age = @Age,
+	Exp = @Exp,
+	Id_Post = (select Post_Id from POSTS where Post = @Id_Post),
+	Id_Store = (select Id_Store from STORES where Name_Store = @Id_Store and County = @Country),
+	Id_Dep = (select Dep_Id from DEPARTMENTS where Depart = @Id_Dep)
+	where Id_Empl = @Empl;
 End;
