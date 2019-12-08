@@ -37,7 +37,7 @@ Create Table TYPE_STORE
 Create Table STORES
 (
 	Id_Store int identity(1,1) constraint STORE_PK PRIMARY KEY,
-    Name_Store char(30),
+    Name_Store nvarchar(30),
     County nvarchar(30),
     Town nvarchar(30),
     Adress nvarchar(50),

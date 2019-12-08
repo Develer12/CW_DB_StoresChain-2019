@@ -55,12 +55,12 @@ Begin
 	WITH num_row AS
 	(
 		SELECT row_number() OVER (ORDER BY County) as nom , 		
-		Name_Store, County, Town, Adress, Size, s.Type, count(Id_Empl) as Workers FROM STORES p
+		p.Id_Store, Name_Store, County, Town, Adress, Size, s.Type, count(Id_Empl) as Workers FROM STORES p
 		LEFT OUTER JOIN
 		TYPE_STORE  s ON s.Store_Type_Id = p.Id_Type
 		LEFT OUTER JOIN
 		EMPLOYEES  t ON t.Id_Store = p.Id_Type
-		group by Name_Store, County, Town, Adress, Size, s.Type
+		group by p.Id_Store, Name_Store, County, Town, Adress, Size, s.Type
 	) 
 	SELECT * FROM num_row
 	WHERE nom BETWEEN @start AND @end;
@@ -134,9 +134,10 @@ Begin
 			DEPARTMENTS d ON d.Dep_Id = t.Id_Dep
 		) 
 		SELECT * FROM num_row
-		WHERE nom BETWEEN @start AND @end
-		order by Prod_Id;
-	else if @ord = 'byName'
+		WHERE nom BETWEEN @start AND @end;
+
+
+	else if @ord like 'byNam'
 		WITH num_row AS
 		(
 			SELECT row_number() OVER (ORDER BY Prod_Name) as nom , 		
@@ -147,9 +148,10 @@ Begin
 			DEPARTMENTS d ON d.Dep_Id = t.Id_Dep
 		) 
 		SELECT * FROM num_row
-		WHERE nom BETWEEN @start AND @end
-		order by Prod_Name;
-	else if @ord = 'byType'
+		WHERE nom BETWEEN @start AND @end;
+
+
+	else if @ord = 'byTyp'
 		WITH num_row AS
 		(
 			SELECT row_number() OVER (ORDER BY Prod_Type) as nom , 		
@@ -158,11 +160,12 @@ Begin
 			PRODUCT_TYPE  t ON t.Prod_Type_Id = p.Type_Prod_Id
 			LEFT OUTER JOIN
 			DEPARTMENTS d ON d.Dep_Id = t.Id_Dep
-		) 
+		)
 		SELECT * FROM num_row
-		WHERE nom BETWEEN @start AND @end
-		order by Prod_Type;
-	else if @ord = 'byDepart'
+		WHERE nom BETWEEN @start AND @end;
+
+
+	else if @ord = 'byDep'
 		WITH num_row AS
 		(
 			SELECT row_number() OVER (ORDER BY Depart) as nom , 		
@@ -173,9 +176,10 @@ Begin
 			DEPARTMENTS d ON d.Dep_Id = t.Id_Dep
 		) 
 		SELECT * FROM num_row
-		WHERE nom BETWEEN @start AND @end
-		order by Depart;
-	else if @ord = 'byPr_P'
+		WHERE nom BETWEEN @start AND @end;
+
+
+	else if @ord = 'byPrP'
 		WITH num_row AS
 		(
 			SELECT row_number() OVER (ORDER BY Price_Purchase) as nom , 		
@@ -186,9 +190,10 @@ Begin
 			DEPARTMENTS d ON d.Dep_Id = t.Id_Dep
 		) 
 		SELECT * FROM num_row
-		WHERE nom BETWEEN @start AND @end
-		order by Price_Purchase;
-	else if @ord = 'byPr_S'
+		WHERE nom BETWEEN @start AND @end;
+
+
+	else if @ord = 'byPrS'
 		WITH num_row AS
 		(
 			SELECT row_number() OVER (ORDER BY Price_Sell) as nom , 		
@@ -199,9 +204,10 @@ Begin
 			DEPARTMENTS d ON d.Dep_Id = t.Id_Dep
 		) 
 		SELECT * FROM num_row
-		WHERE nom BETWEEN @start AND @end
-		order by Price_Sell;
-	else if @ord = 'byWeight'
+		WHERE nom BETWEEN @start AND @end;
+
+
+	else if @ord = 'byWei'
 		WITH num_row AS
 		(
 			SELECT row_number() OVER (ORDER BY Weight) as nom , 		
@@ -212,9 +218,10 @@ Begin
 			DEPARTMENTS d ON d.Dep_Id = t.Id_Dep
 		) 
 		SELECT * FROM num_row
-		WHERE nom BETWEEN @start AND @end
-		order by Weight;
-	else if @ord = 'byVolume'
+		WHERE nom BETWEEN @start AND @end;
+
+
+	else if @ord = 'byVol'
 		WITH num_row AS
 		(
 			SELECT row_number() OVER (ORDER BY Volume) as nom , 		
@@ -225,6 +232,116 @@ Begin
 			DEPARTMENTS d ON d.Dep_Id = t.Id_Dep
 		) 
 		SELECT * FROM num_row
-		WHERE nom BETWEEN @start AND @end
-		order by Volume;
+		WHERE nom BETWEEN @start AND @end;
+
+	if @ord = 'byBarD'
+		WITH num_row AS
+		(
+			SELECT row_number() OVER (ORDER BY Prod_Id DESC) as nom , 		
+			Prod_Id, Prod_Name, Prod_Type,Depart,Price_Purchase,Price_Sell,Weight,Volume FROM PRODUCTS p 
+			LEFT OUTER JOIN
+			PRODUCT_TYPE  t ON t.Prod_Type_Id = p.Type_Prod_Id
+			LEFT OUTER JOIN
+			DEPARTMENTS d ON d.Dep_Id = t.Id_Dep
+		) 
+		SELECT * FROM num_row
+		WHERE nom BETWEEN @start AND @end;
+
+
+	else if @ord = 'byVolD'
+		WITH num_row AS
+		(
+			SELECT row_number() OVER (ORDER BY Volume DESC) as nom , 		
+			Prod_Id, Prod_Name, Prod_Type,Depart,Price_Purchase,Price_Sell,Weight,Volume FROM PRODUCTS p 
+			LEFT OUTER JOIN
+			PRODUCT_TYPE  t ON t.Prod_Type_Id = p.Type_Prod_Id
+			LEFT OUTER JOIN
+			DEPARTMENTS d ON d.Dep_Id = t.Id_Dep
+		) 
+		SELECT * FROM num_row
+		WHERE nom BETWEEN @start AND @end;
+
+
+			else if @ord = 'byNamD'
+		WITH num_row AS
+		(
+			SELECT row_number() OVER (ORDER BY Prod_Name DESC) as nom , 		
+			Prod_Id, Prod_Name, Prod_Type,Depart,Price_Purchase,Price_Sell,Weight,Volume FROM PRODUCTS p 
+			LEFT OUTER JOIN
+			PRODUCT_TYPE  t ON t.Prod_Type_Id = p.Type_Prod_Id
+			LEFT OUTER JOIN
+			DEPARTMENTS d ON d.Dep_Id = t.Id_Dep
+		) 
+		SELECT * FROM num_row
+		WHERE nom BETWEEN @start AND @end;
+
+
+			else if @ord = 'byDepD'
+		WITH num_row AS
+		(
+			SELECT row_number() OVER (ORDER BY Depart DESC) as nom , 		
+			Prod_Id, Prod_Name, Prod_Type,Depart,Price_Purchase,Price_Sell,Weight,Volume FROM PRODUCTS p 
+			LEFT OUTER JOIN
+			PRODUCT_TYPE  t ON t.Prod_Type_Id = p.Type_Prod_Id
+			LEFT OUTER JOIN
+			DEPARTMENTS d ON d.Dep_Id = t.Id_Dep
+		) 
+		SELECT * FROM num_row
+		WHERE nom BETWEEN @start AND @end;
+
+
+			else if @ord = 'byTypD'
+		WITH num_row AS
+		(
+			SELECT row_number() OVER (ORDER BY Prod_Type DESC) as nom , 		
+			Prod_Id, Prod_Name, Prod_Type,Depart,Price_Purchase,Price_Sell,Weight,Volume FROM PRODUCTS p 
+			LEFT OUTER JOIN
+			PRODUCT_TYPE  t ON t.Prod_Type_Id = p.Type_Prod_Id
+			LEFT OUTER JOIN
+			DEPARTMENTS d ON d.Dep_Id = t.Id_Dep
+		) 
+		SELECT * FROM num_row
+		WHERE nom BETWEEN @start AND @end;
+
+
+			else if @ord = 'byPrPD'
+		WITH num_row AS
+		(
+			SELECT row_number() OVER (ORDER BY Price_Purchase DESC) as nom , 		
+			Prod_Id, Prod_Name, Prod_Type,Depart,Price_Purchase,Price_Sell,Weight,Volume FROM PRODUCTS p 
+			LEFT OUTER JOIN
+			PRODUCT_TYPE  t ON t.Prod_Type_Id = p.Type_Prod_Id
+			LEFT OUTER JOIN
+			DEPARTMENTS d ON d.Dep_Id = t.Id_Dep
+		) 
+		SELECT * FROM num_row
+		WHERE nom BETWEEN @start AND @end;
+
+
+			else if @ord = 'byPrSD'
+		WITH num_row AS
+		(
+			SELECT row_number() OVER (ORDER BY Price_Sell DESC) as nom , 		
+			Prod_Id, Prod_Name, Prod_Type,Depart,Price_Purchase,Price_Sell,Weight,Volume FROM PRODUCTS p 
+			LEFT OUTER JOIN
+			PRODUCT_TYPE  t ON t.Prod_Type_Id = p.Type_Prod_Id
+			LEFT OUTER JOIN
+			DEPARTMENTS d ON d.Dep_Id = t.Id_Dep
+		) 
+		SELECT * FROM num_row
+		WHERE nom BETWEEN @start AND @end;
+
+
+			else if @ord = 'byWeiD'
+		WITH num_row AS
+		(
+			SELECT row_number() OVER (ORDER BY Weight DESC) as nom , 		
+			Prod_Id, Prod_Name, Prod_Type,Depart,Price_Purchase,Price_Sell,Weight,Volume FROM PRODUCTS p 
+			LEFT OUTER JOIN
+			PRODUCT_TYPE  t ON t.Prod_Type_Id = p.Type_Prod_Id
+			LEFT OUTER JOIN
+			DEPARTMENTS d ON d.Dep_Id = t.Id_Dep
+		) 
+		SELECT * FROM num_row
+		WHERE nom BETWEEN @start AND @end;
 End;

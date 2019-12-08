@@ -114,3 +114,54 @@ Begin
 	Id_Dep = (select Dep_Id from DEPARTMENTS where Depart = @Id_Dep)
 	where Id_Empl = @Empl;
 End;
+
+----------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------
+
+--Insert inside Stores 
+go
+Create Procedure SStoreAdd
+    @Name_Store nvarchar(30),
+	@Country nvarchar(30),
+  	@Town nvarchar(30),
+	@Addr nvarchar(50),
+	@Id_Type nvarchar(30),
+	@Size int
+AS
+Begin
+	Insert into STORES(Name_Store, County,Town,Adress,Id_Type,Size)
+	values(@Name_Store, @Country, @Town, @Addr, (select Store_Type_Id from TYPE_STORE where Type = @Id_Type), @Size);
+End;
+
+
+--Delete from Stores 
+go
+create Procedure SStoreDel
+		@St int
+AS
+Begin
+	Delete from EMPLOYEES where Id_Store = @St;
+	Delete from STORES where Id_Store = @St;
+End;
+
+--Update Stores
+go
+Create Procedure SStoreUpdate
+	@St int,
+    @Name_Store nvarchar(30),
+	@Country nvarchar(30),
+  	@Town nvarchar(30),
+	@Addr nvarchar(50),
+	@Id_Type nvarchar(30),
+	@Size int
+AS
+Begin
+	Update STORES
+	SET Name_Store = @Name_Store,
+	County = @Country,
+	Town = @Town,
+	Adress = @Addr,
+	Size = @Size,
+	Id_Type = (select Store_Type_Id from TYPE_STORE where Type = @Id_Type)
+	where Id_Store = @St;
+End;
