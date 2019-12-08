@@ -90,13 +90,23 @@ app.get('/LogOut', (req, res) =>
     res.sendFile(__dirname + '/login.html');
 });
 
+//-----------------------------------------------------------
+//-----------------------------------------------------------
+//------------------Get Table------------------------------
 app.get('/api/:tab/:end/:st/:order', (req, res) =>
 {
-    console.log('Get Tab');
-    getHand(req, res);
-});
+    console.log(`Get Tab: /api/${req.params.tab}/${req.params.end}/${req.params.st}/${req.params.order}`);
+    let o = req.params.order;
+    if(o == 'no') o = ' ';
+    else o = "'"+o+"',";
+    DB.Get(req.params.tab, req.params.end, req.params.st, o).then(records =>
+    {res.json(records.recordset);}).catch(error =>
+        {
+            res.statusCode = 400;
+            res.json({error: String(error)});
+        });});
 
-
+/*
 function getHand(req, res)
 {
     let o = req.params.order;
@@ -109,11 +119,15 @@ function getHand(req, res)
             res.json({error: String(error)});
         });
 }
+*/
+
+//-----------------------------------------------------------
+//-----------------------------------------------------------
 
 //-----EXPORT------
 app.get('/export/:type', (req, res) =>
 {
-    console.log('Export');
+    console.log('Export' + req.params.type);
     var filePath = '../backups/STORES_CHAIN.bak';
     if (fs.existsSync(filePath) && req.params.type =='ExDB')
       fs.unlinkSync(filePath);
@@ -127,7 +141,7 @@ app.get('/export/:type', (req, res) =>
 //-----IMPORT------
 app.get('/import/:type', (req, res) =>
 {
-    console.log('Import');
+    console.log('Import' + req.params.type);
     var filePathDB = '../backups/STORES_CHAIN.bak';
     var filePathXML = '../backups/Import.xml';
     if ((fs.existsSync(filePathDB) && req.params.type =='ImDB') || (req.params.type =='ImProdfromXml' && fs.existsSync(filePathXML)))

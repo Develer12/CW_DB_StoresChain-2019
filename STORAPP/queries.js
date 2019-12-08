@@ -19,11 +19,13 @@ class DB {
 
     Get(tab, end, start, order)
     {
+        console.log(`Exec ${tab} ${order} ${end}, ${start}`);
         return connectionPool.then(pool => pool.query(`Exec ${tab} ${order} ${end}, ${start}`));
     }
 
     Exp_Imp(exec)
     {
+        console.log(`Exec ${exec}`);
         return connectionPool.then(pool => pool.query(`Exec ${exec}`));
     }
 
@@ -34,56 +36,8 @@ class DB {
 
     Control_DB(exec, param)
     {
+      console.log(`Exec ${exec} ${param}`);
       return connectionPool.then(pool => pool.query(`Exec ${exec} ${param}`));
-    }
-
-    Update(tab, fields)
-    {
-        return connectionPool.then(pool =>
-        {
-            const tab = tab + '_Id';
-            if (!fields[tab] || !Number.isInteger(fields[tab]))
-                throw 'Problem with ID';
-            const req = pool.req();
-            let command = `UPDATE ${tab} SET `;
-            Object.keys(fields).forEach(field =>
-            {
-                let fieldType = Number.isInteger(fields[field]) ? sql.Int : sql.NVarChar;
-                req.input(field, fieldType, fields[field]);
-                if (!field.endsWith('Id'))
-                    command += `${field} = @${field},`;
-            });
-            command = command.slice(0, -1);
-            command += ` WHERE ${tab} = @${tab}`;
-            return req.query(command);
-        });
-    }
-
-    Insert(tab, fields)
-    {
-        return connectionPool.then(pool =>
-        {
-            const req = pool.request();
-            let command = `INSERT INTO ${tab} values (`;
-            Object.keys(fields).forEach(field =>
-            {
-                let fieldType = Number.isInteger(fields[field]) ? sql.Int : sql.NVarChar;
-                req.input(field, fieldType, fields[field]);
-                command += `@${field},`;
-            });
-            command = command.replace(/.$/,")");
-            return req.query(command);
-        });
-    }
-
-    Delete(tab, id)
-    {
-        return connectionPool.then(pool =>
-        {
-          if (!id || !Number.isInteger(Number(id)))
-              throw 'Problem with ID';
-          return pool.query(`DELETE FROM ${tab} WHERE ${tab}_Id = ${id}`);
-        });
     }
 }
 

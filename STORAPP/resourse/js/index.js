@@ -20,9 +20,22 @@ function PrPage()
   get_tab();
 }
 
+let OrderCLK = 0;
 function TagOrder(elem)
 {
+  OrderCLK++;
+  if(OrderCLK == 2 && order != elem.id)
+  {
+      end = 100, st = 0;
+      OrderCLK = 1;
+  }
   order=elem.id;
+  if(OrderCLK == 2)
+  {
+    OrderCLK = 0;
+    order=order+'D';
+  }
+  console.log(order);
   get_tab();
 }
 
@@ -88,6 +101,7 @@ function TSearch()
         <td>Volume</td>
         </tr>`;
         order = Search_T;
+        Create_S_Butt();
       break;
     }
     get_tab();
@@ -95,7 +109,16 @@ function TSearch()
 }
 
 let bd_butt = document.getElementById('db_b');
-function TagTab(elem)
+function Create_S_Butt()
+{
+  bd_butt.innerHTML =
+      `
+      <img title="Add" id="Add"  onclick="Control_DB(this)" src="http://localhost:3000/ResHandler/add/png" class="IcoDB">
+      <img title="Delete" id="Del" onclick="Control_DB(this)" src="http://localhost:3000/ResHandler/del/png" class="IcoDB">
+      `;
+}
+
+function Create_T_Butt()
 {
   bd_butt.innerHTML =
       `
@@ -103,27 +126,33 @@ function TagTab(elem)
       <img title="Delete" id="Del" onclick="Control_DB(this)" src="http://localhost:3000/ResHandler/del/png" class="IcoDB">
       <img title="Update" id="Update" onclick="Control_DB(this)" src="http://localhost:3000/ResHandler/update/png" class="IcoDB">
       `;
+}
+
+function TagTab(elem)
+{
+  Create_T_Butt();
   document.getElementById('out_pulp').innerHTML='';
   defTR='';
   end = 100, st = 0;
   Tab = elem.id;
   switch (Tab)
   {
-    case 'SProdOrder': //NOT WORK DEPART, WEIGHT AND VOLUME
+    case 'SProdOrder': //NOT WORK Desc Type, name and Prices
       defTR = `<tr>
                   <td id="byBar" onClick="TagOrder(this)">BarCode</td>
-                  <td id="byName" onClick="TagOrder(this)">Name</td>
-                  <td id="byType" onClick="TagOrder(this)">Type</td>
-                  <td id="byDepart" onClick="TagOrder(this)">Department</td>
-                  <td id="byPr_P" onClick="TagOrder(this)">Purchase Price</td>
-                  <td id="byPr_S" onClick="TagOrder(this)">Sell Price</td>
-                  <td id="byWeight" onClick="TagOrder(this)">Weight</td>
-                  <td id="byVolume" onClick="TagOrder(this)">Volume</td>
+                  <td id="byNam" onClick="TagOrder(this)">Name</td>
+                  <td id="byTyp" onClick="TagOrder(this)">Type</td>
+                  <td id="byDep" onClick="TagOrder(this)">Department</td>
+                  <td id="byPrP" onClick="TagOrder(this)">Purchase Price</td>
+                  <td id="byPrS" onClick="TagOrder(this)">Sell Price</td>
+                  <td id="byWei" onClick="TagOrder(this)">Weight</td>
+                  <td id="byVol" onClick="TagOrder(this)">Volume</td>
               </tr>`;
-        order = 'byName';
+        order = 'byNam';
       break;
       case 'SStore':
           defTR = `<tr>
+                    <td>Id</td>
                     <td>Store</td>
                     <td>Country</td>
                     <td>Town</td>
@@ -185,7 +214,7 @@ async function get_tab()
           break;
         case 'OutBasket': pulp.innerHTML = `<td>${row.Prod_Id}</td><td>${row.Prod_Name}</td><td>${row.Prod_Type}</td><td>${row.Depart}</td><td>${row.Price_Purchase}</td><td>${row.Price_Sell}</td><td>${row.Weight}</td><td>${row.Volume}</td>`;
           break;
-        case 'SStore': pulp.innerHTML = `<td>${row.Name_Store}</td><td>${row.County}</td><td>${row.Town}</td><td>${row.Adress}</td><td>${row.Size}</td><td>${row.Type}</td><td>${row.Workers}</td>`;
+        case 'SStore': pulp.innerHTML = `<td>${row.Id_Store}</td><td>${row.Name_Store}</td><td>${row.County}</td><td>${row.Town}</td><td>${row.Adress}</td><td>${row.Size}</td><td>${row.Type}</td><td>${row.Workers}</td>`;
             break;
         case 'FindProd': pulp.innerHTML = `<td>${row.Prod_Id}</td><td>${row.Prod_Name}</td><td>${row.Prod_Type}</td><td>${row.Depart}</td><td>${row.Price_Purchase}</td><td>${row.Price_Sell}</td><td>${row.Weight}</td><td>${row.Volume}</td>`;
               break;
@@ -246,20 +275,22 @@ function Control_DB(elem)
     sender = document.createElement('center');
     db_c.innerHTML = '';
     let LINK = `${controlLINK}/${fun}/${Tab}`;
+    let formPt = `<form action="${LINK}" method="post">`;
+
     if(Tab == 'SProdOrder')
     {
         if(fun == 'Add' || fun == 'Update')
         {
           sender.innerHTML =
-          `<form action="${LINK}" method="post">
-              <input class="TSearch" type="text" name="BarCode" placeholder="BarCode" class="IcoSearch">
-              <input class="TSearch" type="text" name="Name" placeholder="Name" class="IcoSearch">
-              <input class="TSearch" type="text" name="Type" placeholder="Type" class="IcoSearch">
-              <input class="TSearch" type="text" name="Depart" placeholder="Department" class="IcoSearch">
-              <input class="TSearch" type="text" name="Purch" placeholder="Purchase Price" class="IcoSearch">
-              <input class="TSearch" type="text" name="Sell" placeholder="Sell Price" class="IcoSearch">
-              <input class="TSearch" type="text" name="Weight" placeholder="Weight" class="IcoSearch">
-              <input class="TSearch" type="text" name="Volume" placeholder="Volume" class="IcoSearch">
+          `<form onsubmit="submitHandler(this); return false;" action="${LINK}" method="post">
+              <input class="TSearch" type="text" name="BarCode" placeholder="BarCode" class="IcoSearch" required>
+              <input class="TSearch" type="text" name="Name" placeholder="Name" class="IcoSearch" required>
+              <input class="TSearch" type="text" name="Type" placeholder="Type" class="IcoSearch" required>
+              <input class="TSearch" type="text" name="Depart" placeholder="Department" class="IcoSearch" required>
+              <input class="TSearch" type="text" name="Purch" placeholder="Purchase Price" class="IcoSearch" required>
+              <input class="TSearch" type="text" name="Sell" placeholder="Sell Price" class="IcoSearch" required>
+              <input class="TSearch" type="text" name="Weight" placeholder="Weight" class="IcoSearch" required>
+              <input class="TSearch" type="text" name="Volume" placeholder="Volume" class="IcoSearch" required>
               <input type="submit" value="Input" />
            </form>`;
         }
@@ -267,7 +298,7 @@ function Control_DB(elem)
         {
           sender.innerHTML =
           `<form action="${LINK}" method="post">
-              <input class="TSearch" type="text" name="BarCode" placeholder="BarCode"class="IcoSearch">
+              <input class="TSearch" type="text" name="BarCode" placeholder="BarCode"class="IcoSearch" required>
               <input type="submit" value="Delete" />
            </form>`;
         }
@@ -278,16 +309,16 @@ function Control_DB(elem)
         {
           sender.innerHTML =
           `<form action="${LINK}" method="post">
-              <input class="TSearch" type="text" name="F_Name" placeholder="First Name" class="IcoSearch">
-              <input class="TSearch" type="text" name="S_Name" placeholder="Second Name" class="IcoSearch">
-              <input class="TSearch" type="text" name="Fa_Name" placeholder="Father Name" class="IcoSearch">
-              <input class="TSearch" type="text" name="Post" placeholder="Post" class="IcoSearch">
-              <input class="TSearch" type="text" name="Sex" placeholder="Sex" class="IcoSearch">
-              <input class="TSearch" type="text" name="Age" placeholder="Age" class="IcoSearch">
-              <input class="TSearch" type="text" name="Exp" placeholder="Experience" class="IcoSearch">
-              <input class="TSearch" type="text" name="Store" placeholder="Store" class="IcoSearch">
-              <input class="TSearch" type="text" name="Country" placeholder="Country" class="IcoSearch">
-              <input class="TSearch" type="text" name="Depart" placeholder="Department" class="IcoSearch">
+              <input class="TSearch" type="text" name="F_Name" placeholder="First Name" class="IcoSearch" required>
+              <input class="TSearch" type="text" name="S_Name" placeholder="Second Name" class="IcoSearch" required>
+              <input class="TSearch" type="text" name="Fa_Name" placeholder="Father Name" class="IcoSearch" required>
+              <input class="TSearch" type="text" name="Post" placeholder="Post" class="IcoSearch" required>
+              <input class="TSearch" type="text" name="Sex" placeholder="Sex" class="IcoSearch" required>
+              <input class="TSearch" type="text" name="Age" placeholder="Age" class="IcoSearch" required>
+              <input class="TSearch" type="text" name="Exp" placeholder="Experience" class="IcoSearch" required>
+              <input class="TSearch" type="text" name="Store" placeholder="Store" class="IcoSearch" required>
+              <input class="TSearch" type="text" name="Country" placeholder="Country" class="IcoSearch" required>
+              <input class="TSearch" type="text" name="Depart" placeholder="Department" class="IcoSearch" required>
               <input type="submit" value="Input" />
           </form>`;
       }
@@ -295,17 +326,17 @@ function Control_DB(elem)
       {
         sender.innerHTML =
         `<form action="${LINK}" method="post">
-            <input class="TSearch" type="text" name="ID" placeholder="ID" class="IcoSearch">
-            <input class="TSearch" type="text" name="F_Name" placeholder="First Name" class="IcoSearch">
-            <input class="TSearch" type="text" name="S_Name" placeholder="Second Name" class="IcoSearch">
-            <input class="TSearch" type="text" name="Fa_Name" placeholder="Father Name" class="IcoSearch">
-            <input class="TSearch" type="text" name="Post" placeholder="Post" class="IcoSearch">
-            <input class="TSearch" type="text" name="Sex" placeholder="Sex" class="IcoSearch">
-            <input class="TSearch" type="text" name="Age" placeholder="Age" class="IcoSearch">
-            <input class="TSearch" type="text" name="Exp" placeholder="Experience" class="IcoSearch">
-            <input class="TSearch" type="text" name="Store" placeholder="Store" class="IcoSearch">
-            <input class="TSearch" type="text" name="Country" placeholder="Country" class="IcoSearch">
-            <input class="TSearch" type="text" name="Depart" placeholder="Department" class="IcoSearch">
+            <input class="TSearch" type="text" name="ID" placeholder="ID" class="IcoSearch" required>
+            <input class="TSearch" type="text" name="F_Name" placeholder="First Name" class="IcoSearch" required>
+            <input class="TSearch" type="text" name="S_Name" placeholder="Second Name" class="IcoSearch" required>
+            <input class="TSearch" type="text" name="Fa_Name" placeholder="Father Name" class="IcoSearch" required>
+            <input class="TSearch" type="text" name="Post" placeholder="Post" class="IcoSearch" required>
+            <input class="TSearch" type="text" name="Sex" placeholder="Sex" class="IcoSearch" required>
+            <input class="TSearch" type="text" name="Age" placeholder="Age" class="IcoSearch" required>
+            <input class="TSearch" type="text" name="Exp" placeholder="Experience" class="IcoSearch" required>
+            <input class="TSearch" type="text" name="Store" placeholder="Store" class="IcoSearch" required>
+            <input class="TSearch" type="text" name="Country" placeholder="Country" class="IcoSearch" required>
+            <input class="TSearch" type="text" name="Depart" placeholder="Department" class="IcoSearch" required>
             <input type="submit" value="Input" />
         </form>`;
     }
@@ -313,7 +344,7 @@ function Control_DB(elem)
       {
           sender.innerHTML =
           `<form action="${LINK}" method="post">
-              <input class="TSearch" type="text" name="ID" placeholder="ID" class="IcoSearch">
+              <input class="TSearch" type="text" name="Id_Empl" placeholder="Employee ID" class="IcoSearch" required>
               <input type="submit" value="Delete" />
            </form>`;
       }
@@ -324,24 +355,37 @@ function Control_DB(elem)
         {
           sender.innerHTML =
           `<form action="${LINK}" method="post">
-              <input class="TSearch" type="text" name="Store" placeholder="Store" class="IcoSearch">
-              <input class="TSearch" type="text" name="Country" placeholder="Country" class="IcoSearch">
-              <input class="TSearch" type="text" name="Town" placeholder="Town" class="IcoSearch">
-              <input class="TSearch" type="text" name="Addr" placeholder="Address" class="IcoSearch">
-              <input class="TSearch" type="text" name="Size" placeholder="Size" class="IcoSearch">
-              <input class="TSearch" type="text" name="Type" placeholder="Type" class="IcoSearch">
-              <input class="TSearch" type="text" name="Workers" placeholder="Workers" class="IcoSearch">
+              <input class="TSearch" type="text" name="Store" placeholder="Store" class="IcoSearch" required>
+              <input class="TSearch" type="text" name="Country" placeholder="Country" class="IcoSearch" required>
+              <input class="TSearch" type="text" name="Town" placeholder="Town" class="IcoSearch" required>
+              <input class="TSearch" type="text" name="Addr" placeholder="Address" class="IcoSearch" required>
+              <input class="TSearch" type="text" name="Type" placeholder="Type" class="IcoSearch" required>
+              <input class="TSearch" type="text" name="Size" placeholder="Size" class="IcoSearch" required>
               <input type="submit" value="Input" />
           </form>`;
-      }
-      else if(fun == 'Del')
-      {
-          sender.innerHTML =
-          `<form action="${LINK}" method="post">
-              <input class="TSearch" type="text" name="BarCode" placeholder="BarCode" class="IcoSearch">
-              <input type="submit" value="Delete" />
-           </form>`;
-      }
+        }
+        else if(fun == 'Del')
+        {
+            sender.innerHTML =
+            `<form action="${LINK}" method="post">
+            <input class="TSearch" type="text" name="Id_Store" placeholder="ID Store" class="IcoSearch" required>
+                <input type="submit" value="Delete" />
+             </form>`;
+         }
+         if(fun == 'Update')
+         {
+            sender.innerHTML =
+            `<form action="${LINK}" method="post">
+                <input class="TSearch" type="text" name="Id_Store" placeholder="ID Store" class="IcoSearch" required>
+                <input class="TSearch" type="text" name="Store" placeholder="Store" class="IcoSearch" required>
+                <input class="TSearch" type="text" name="Country" placeholder="Country" class="IcoSearch" required>
+                <input class="TSearch" type="text" name="Town" placeholder="Town" class="IcoSearch" required>
+                <input class="TSearch" type="text" name="Addr" placeholder="Address" class="IcoSearch" required>
+                <input class="TSearch" type="text" name="Type" placeholder="Type" class="IcoSearch" required>
+                <input class="TSearch" type="text" name="Size" placeholder="Size" class="IcoSearch" required>
+                <input type="submit" value="Input" />
+            </form>`;
+         }
     }
     else if(Tab == 'OutBasket')
     {
@@ -349,28 +393,30 @@ function Control_DB(elem)
         {
           sender.innerHTML =
           `<form action="${LINK}" method="post">
-              <input class="TSearch" type="text" name="BarCode" placeholder="BarCode" class="IcoSearch">
-              <input class="TSearch" type="text" name="Name" placeholder="Name" class="IcoSearch">
-              <input class="TSearch" type="text" name="Type" placeholder="Type" class="IcoSearch">
-              <input class="TSearch" type="text" name="Purch" placeholder="Purchase Price" class="IcoSearch">
-              <input class="TSearch" type="text" name="Sell" placeholder="Sell Price" class="IcoSearch">
-              <input class="TSearch" type="text" name="Weight" placeholder="Weight" class="IcoSearch">
-              <input class="TSearch" type="text" name="Volume" placeholder="Volume" class="IcoSearch">
+              <input class="TSearch" type="text" name="Id_User" placeholder="Buyer ID" class="IcoSearch" required>
+              <input class="TSearch" type="text" name="BarCode" placeholder="BarCode" class="IcoSearch" required>
               <input type="submit" value="Input" />
            </form>`;
+           document.getElementsByName('Id_User').value = Search_T;
         }
         else if(fun == 'Del')
         {
           sender.innerHTML =
           `<form action="${LINK}" method="post">
-              <input class="TSearch" type="text" name="BarCode" placeholder="BarCode"class="IcoSearch">
+              <input class="TSearch" type="text" name="BarCode" placeholder="BarCode" class="IcoSearch" required>
               <input type="submit" value="Delete" />
            </form>`;
         }
-      }
+    }
      db_c.append(sender);
 }
 
+function submitHandler(form)
+{
+  alert('submit');
+  form.submit().then(res => {checkErrors(res);});
+  //form.submit().then(res => {checkErrors(res);}); //Problem With Error Catching, not output error in index
+}
 
 const importLINK = 'http://localhost:3000/import';
 function Import(elem)
