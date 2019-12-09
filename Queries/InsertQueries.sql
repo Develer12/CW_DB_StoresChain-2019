@@ -165,3 +165,80 @@ Begin
 	Id_Type = (select Store_Type_Id from TYPE_STORE where Type = @Id_Type)
 	where Id_Store = @St;
 End;
+
+
+----------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------
+
+--Insert inside Users 
+go
+Create Procedure SUserAdd
+    @Name_First nvarchar(50),
+    @Name_Sec nvarchar(50),
+    @Name_Father nvarchar(50),
+    @Sex nchar(1), 
+    @Age int,
+    @User_Type nvarchar(20)
+AS
+Begin
+	Insert into USERS(Name_First, Name_Sec,Name_Father,Sex,Age,User_Type)
+	values(@Name_First, @Name_Sec, @Name_Father, @Sex, @Age, (select Type_User_Id from USER_TYPE where Type_User = @User_Type));
+End;
+
+
+--Delete from Users 
+go
+create Procedure SUserDel
+		@Id int
+AS
+Begin
+	Delete from USER_BASKET where Id_User = @Id;
+	Delete from USERS where Id_User = @Id;
+End;
+
+--Update User
+go
+Create Procedure SUserUpdate
+	@Id int,
+    @Name_First nvarchar(50),
+    @Name_Sec nvarchar(50),
+    @Name_Father nvarchar(50),
+    @Sex nchar(1), 
+    @Age int,
+    @User_Type nvarchar(20)
+AS
+Begin
+	Update USERS
+	SET Name_First = @Name_First,
+	Name_Sec = @Name_Sec,
+	Name_Father = @Name_Father,
+	Sex = @Sex,
+	Age = @Age,
+	User_Type = (select Type_User_Id from USER_TYPE where Type_User = @User_Type)
+	where Id_User = @Id;
+End;
+
+----------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------
+
+--Insert inside Basket 
+go
+Create Procedure OutBasketAdd
+	@User int,
+	@Id nvarchar(13)
+AS
+Begin
+	Insert into USER_BASKET(Id_User, Product)
+	values(@User, (select Prod_Num from PRODUCTS where Prod_Id = @Id));
+End;
+
+
+--Delete from Basket 
+go
+create Procedure OutBasketDel
+		@User int,
+		@Id nvarchar(13)
+AS
+Begin
+	Delete top(1) from USER_BASKET where Product = (select Prod_Num from PRODUCTS where Prod_Id = @Id) and Id_User = @User;
+End;
