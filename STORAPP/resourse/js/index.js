@@ -92,6 +92,7 @@ function TSearch()
       case 'OutBasket':
         defTR = `<tr>
         <td>BarCode</td>
+        <td>Count</td>
         <td>Name</td>
         <td>Type</td>
         <td>Department</td>
@@ -137,7 +138,7 @@ function TagTab(elem)
   Tab = elem.id;
   switch (Tab)
   {
-    case 'SProdOrder': //NOT WORK Desc Type, name and Prices
+    case 'SProdOrder':
       defTR = `<tr>
                   <td id="byBar" onClick="TagOrder(this)">BarCode</td>
                   <td id="byNam" onClick="TagOrder(this)">Name</td>
@@ -179,6 +180,19 @@ function TagTab(elem)
                  </tr>`;
         order = 'no';
       break;
+      case 'SUser':
+        defTR = `<tr>
+                  <td>Id</td>
+                  <td>First Name</td>
+                  <td>Second Name</td>
+                  <td>Father Name</td>
+                  <td>Sex</td>
+                  <td>Age</td>
+                  <td>Type</td>
+                  <td>Sale</td>
+                 </tr>`;
+        order = 'no';
+      break;
   }
   get_tab();
   searchF.remove();
@@ -211,15 +225,18 @@ async function get_tab()
       switch (Tab)
       {
         case 'SProdOrder': pulp.innerHTML = `<td>${row.Prod_Id}</td><td>${row.Prod_Name}</td><td>${row.Prod_Type}</td><td>${row.Depart}</td><td>${row.Price_Purchase}</td><td>${row.Price_Sell}</td><td>${row.Weight}</td><td>${row.Volume}</td>`;
-          break;
-        case 'OutBasket': pulp.innerHTML = `<td>${row.Prod_Id}</td><td>${row.Prod_Name}</td><td>${row.Prod_Type}</td><td>${row.Depart}</td><td>${row.Price_Purchase}</td><td>${row.Price_Sell}</td><td>${row.Weight}</td><td>${row.Volume}</td>`;
-          break;
+            break;
+        case 'OutBasket': pulp.innerHTML = `<td>${row.Prod_Id}</td><td>${row.Count}</td><td>${row.Prod_Name}</td><td>${row.Prod_Type}</td><td>${row.Depart}</td><td>${row.Price_Purchase}</td><td>${row.Price_Sell}</td><td>${row.Weight}</td><td>${row.Volume}</td>`;
+            break;
         case 'SStore': pulp.innerHTML = `<td>${row.Id_Store}</td><td>${row.Name_Store}</td><td>${row.County}</td><td>${row.Town}</td><td>${row.Adress}</td><td>${row.Size}</td><td>${row.Type}</td><td>${row.Workers}</td>`;
             break;
         case 'FindProd': pulp.innerHTML = `<td>${row.Prod_Id}</td><td>${row.Prod_Name}</td><td>${row.Prod_Type}</td><td>${row.Depart}</td><td>${row.Price_Purchase}</td><td>${row.Price_Sell}</td><td>${row.Weight}</td><td>${row.Volume}</td>`;
-              break;
+            break;
+        case 'SUser': pulp.innerHTML = `<td>${row.Id_User}</td><td>${row.Name_First}</td><td>${row.Name_Sec}</td><td>${row.Name_Father}</td><td>${row.Sex}</td><td>${row.Age}</td><td>${row.Type_User}</td><td>${row.Sale_Size}</td>`;
+            break;
         case 'SEmpl': pulp.innerHTML = `<td>${row.Id_Empl}</td><td>${row.Name_First}</td><td>${row.Name_Sec}</td><td>${row.Name_Father}</td><td>${row.Post}</td><td>${row.Sex}</td><td>${row.Age}</td><td>${row.Exp}</td>`+
-                      `<td>${row.Name_Store}</td><td>${row.County}</td><td>${row.Depart}</td>`;                  break;
+                      `<td>${row.Name_Store}</td><td>${row.County}</td><td>${row.Depart}</td>`;
+            break;
       }
       table.append(pulp);
     });
@@ -403,8 +420,47 @@ function Control_DB(elem)
         {
           sender.innerHTML =
           `<form action="${LINK}" method="post">
+              <input class="TSearch" type="text" name="Id_User" placeholder="Buyer ID" class="IcoSearch" required>
               <input class="TSearch" type="text" name="BarCode" placeholder="BarCode" class="IcoSearch" required>
               <input type="submit" value="Delete" />
+           </form>`;
+        }
+    }
+    else if(Tab == 'SUser')
+    {
+        if(fun == 'Add')
+        {
+          sender.innerHTML =
+          `<form action="${LINK}" method="post">
+              <input class="TSearch" type="text" name="F_Name" placeholder="First Name" class="IcoSearch" required>
+              <input class="TSearch" type="text" name="S_Name" placeholder="Second Name" class="IcoSearch" required>
+              <input class="TSearch" type="text" name="Fa_Name" placeholder="Father Name" class="IcoSearch" required>
+              <input class="TSearch" type="text" name="Sex" placeholder="Sex" class="IcoSearch" required>
+              <input class="TSearch" type="text" name="Age" placeholder="Age" class="IcoSearch" required>
+              <input class="TSearch" type="text" name="User_Type" placeholder="Type" class="IcoSearch" required>
+              <input type="submit" value="Input" />
+           </form>`;
+        }
+        else if(fun == 'Del')
+        {
+          sender.innerHTML =
+          `<form action="${LINK}" method="post">
+              <input class="TSearch" type="text" name="Id_User" placeholder="Buyer ID" class="IcoSearch" required>
+              <input type="submit" value="Delete" />
+           </form>`;
+        }
+        if(fun == 'Update')
+        {
+          sender.innerHTML =
+          `<form action="${LINK}" method="post">
+              <input class="TSearch" type="text" name="Id_User" placeholder="Buyer ID" class="IcoSearch" required>
+              <input class="TSearch" type="text" name="F_Name" placeholder="First Name" class="IcoSearch" required>
+              <input class="TSearch" type="text" name="S_Name" placeholder="Second Name" class="IcoSearch" required>
+              <input class="TSearch" type="text" name="Fa_Name" placeholder="Father Name" class="IcoSearch" required>
+              <input class="TSearch" type="text" name="Sex" placeholder="Sex" class="IcoSearch" required>
+              <input class="TSearch" type="text" name="Age" placeholder="Age" class="IcoSearch" required>
+              <input class="TSearch" type="text" name="User_Type" placeholder="Type" class="IcoSearch" required>
+              <input type="submit" value="Input" />
            </form>`;
         }
     }
