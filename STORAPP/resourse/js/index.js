@@ -292,29 +292,28 @@ function Control_DB(elem)
     sender = document.createElement('center');
     db_c.innerHTML = '';
     let LINK = `${controlLINK}/${fun}/${Tab}`;
-    let formPt = `<form action="${LINK}" method="post">`;
-
+    let formPt = `<form onsubmit="submitHandler(this); return false;" action="${LINK}" method="post">`;
     if(Tab == 'SProdOrder')
     {
         if(fun == 'Add' || fun == 'Update')
         {
           sender.innerHTML =
-          `<form onsubmit="submitHandler(this); return false;" action="${LINK}" method="post">
+          `${formPt}
               <input class="TSearch" type="text" name="BarCode" placeholder="BarCode" class="IcoSearch" required>
               <input class="TSearch" type="text" name="Name" placeholder="Name" class="IcoSearch" required>
               <input class="TSearch" type="text" name="Type" placeholder="Type" class="IcoSearch" required>
               <input class="TSearch" type="text" name="Depart" placeholder="Department" class="IcoSearch" required>
               <input class="TSearch" type="text" name="Purch" placeholder="Purchase Price" class="IcoSearch" required>
               <input class="TSearch" type="text" name="Sell" placeholder="Sell Price" class="IcoSearch" required>
-              <input class="TSearch" type="text" name="Weight" placeholder="Weight" class="IcoSearch" required>
-              <input class="TSearch" type="text" name="Volume" placeholder="Volume" class="IcoSearch" required>
+              <input class="TSearch" type="number" min="1" name="Weight" placeholder="Weight" class="IcoSearch" required>
+              <input class="TSearch" type="number" min="1" placeholder="Volume" class="IcoSearch" required>
               <input type="submit" value="Input" />
            </form>`;
         }
         else if(fun == 'Del')
         {
           sender.innerHTML =
-          `<form action="${LINK}" method="post">
+          `${formPt}
               <input class="TSearch" type="text" name="BarCode" placeholder="BarCode"class="IcoSearch" required>
               <input type="submit" value="Delete" />
            </form>`;
@@ -325,14 +324,17 @@ function Control_DB(elem)
         if(fun == 'Add')
         {
           sender.innerHTML =
-          `<form action="${LINK}" method="post">
+          `${formPt}
               <input class="TSearch" type="text" name="F_Name" placeholder="First Name" class="IcoSearch" required>
               <input class="TSearch" type="text" name="S_Name" placeholder="Second Name" class="IcoSearch" required>
               <input class="TSearch" type="text" name="Fa_Name" placeholder="Father Name" class="IcoSearch" required>
               <input class="TSearch" type="text" name="Post" placeholder="Post" class="IcoSearch" required>
-              <input class="TSearch" type="text" name="Sex" placeholder="Sex" class="IcoSearch" required>
-              <input class="TSearch" type="text" name="Age" placeholder="Age" class="IcoSearch" required>
-              <input class="TSearch" type="text" name="Exp" placeholder="Experience" class="IcoSearch" required>
+              <select class="TSearch" name="Sex">
+                  <option value="F">Female</option>
+                  <option value="M">Male</option>
+              </select>
+              <input class="TSearch" type="number" name="Age" max="100" min="16" placeholder="Age" class="IcoSearch" required>
+              <input class="TSearch" type="number" name="Exp" max="84" min="0" placeholder="Experience" class="IcoSearch" required>
               <input class="TSearch" type="text" name="Store" placeholder="Store" class="IcoSearch" required>
               <input class="TSearch" type="text" name="Country" placeholder="Country" class="IcoSearch" required>
               <input class="TSearch" type="text" name="Depart" placeholder="Department" class="IcoSearch" required>
@@ -342,15 +344,18 @@ function Control_DB(elem)
       if(fun == 'Update')
       {
         sender.innerHTML =
-        `<form action="${LINK}" method="post">
-            <input class="TSearch" type="text" name="ID" placeholder="ID" class="IcoSearch" required>
+        `${formPt}
+            <input class="TSearch" type="number" min="1" name="ID" placeholder="ID" class="IcoSearch" required>
             <input class="TSearch" type="text" name="F_Name" placeholder="First Name" class="IcoSearch" required>
             <input class="TSearch" type="text" name="S_Name" placeholder="Second Name" class="IcoSearch" required>
             <input class="TSearch" type="text" name="Fa_Name" placeholder="Father Name" class="IcoSearch" required>
             <input class="TSearch" type="text" name="Post" placeholder="Post" class="IcoSearch" required>
-            <input class="TSearch" type="text" name="Sex" placeholder="Sex" class="IcoSearch" required>
-            <input class="TSearch" type="text" name="Age" placeholder="Age" class="IcoSearch" required>
-            <input class="TSearch" type="text" name="Exp" placeholder="Experience" class="IcoSearch" required>
+            <select class="TSearch" name="Sex">
+                <option value="F">Female</option>
+                <option value="M">Male</option>
+            </select>
+            <input class="TSearch" type="number" name="Age" max="100" min="16" placeholder="Age" class="IcoSearch" required>
+            <input class="TSearch" type="number" name="Exp" max="84" min="0" placeholder="Experience" class="IcoSearch" required>
             <input class="TSearch" type="text" name="Store" placeholder="Store" class="IcoSearch" required>
             <input class="TSearch" type="text" name="Country" placeholder="Country" class="IcoSearch" required>
             <input class="TSearch" type="text" name="Depart" placeholder="Department" class="IcoSearch" required>
@@ -360,8 +365,8 @@ function Control_DB(elem)
       else if(fun == 'Del')
       {
           sender.innerHTML =
-          `<form action="${LINK}" method="post">
-              <input class="TSearch" type="text" name="Id_Empl" placeholder="Employee ID" class="IcoSearch" required>
+          `${formPt}
+              <input class="TSearch" type="number" min="1" name="Id_Empl" placeholder="Employee ID" class="IcoSearch" required>
               <input type="submit" value="Delete" />
            </form>`;
       }
@@ -371,7 +376,7 @@ function Control_DB(elem)
         if(fun == 'Add')
         {
           sender.innerHTML =
-          `<form action="${LINK}" method="post">
+          `${formPt}
               <input class="TSearch" type="text" name="Store" placeholder="Store" class="IcoSearch" required>
               <input class="TSearch" type="text" name="Country" placeholder="Country" class="IcoSearch" required>
               <input class="TSearch" type="text" name="Town" placeholder="Town" class="IcoSearch" required>
@@ -384,7 +389,7 @@ function Control_DB(elem)
         else if(fun == 'Del')
         {
             sender.innerHTML =
-            `<form action="${LINK}" method="post">
+            `${formPt}
             <input class="TSearch" type="text" name="Id_Store" placeholder="ID Store" class="IcoSearch" required>
                 <input type="submit" value="Delete" />
              </form>`;
@@ -392,7 +397,7 @@ function Control_DB(elem)
          if(fun == 'Update')
          {
             sender.innerHTML =
-            `<form action="${LINK}" method="post">
+            `${formPt}
                 <input class="TSearch" type="text" name="Id_Store" placeholder="ID Store" class="IcoSearch" required>
                 <input class="TSearch" type="text" name="Store" placeholder="Store" class="IcoSearch" required>
                 <input class="TSearch" type="text" name="Country" placeholder="Country" class="IcoSearch" required>
@@ -409,8 +414,8 @@ function Control_DB(elem)
         if(fun == 'Add')
         {
           sender.innerHTML =
-          `<form action="${LINK}" method="post">
-              <input class="TSearch" type="text" name="Id_User" placeholder="Buyer ID" class="IcoSearch" required>
+          `${formPt}
+              <input class="TSearch" type="number" min="1" name="Id_User" placeholder="Buyer ID" class="IcoSearch" required>
               <input class="TSearch" type="text" name="BarCode" placeholder="BarCode" class="IcoSearch" required>
               <input type="submit" value="Input" />
            </form>`;
@@ -419,8 +424,8 @@ function Control_DB(elem)
         else if(fun == 'Del')
         {
           sender.innerHTML =
-          `<form action="${LINK}" method="post">
-              <input class="TSearch" type="text" name="Id_User" placeholder="Buyer ID" class="IcoSearch" required>
+          `${formPt}
+              <input class="TSearch" type="number" min="1" name="Id_User" placeholder="Buyer ID" class="IcoSearch" required>
               <input class="TSearch" type="text" name="BarCode" placeholder="BarCode" class="IcoSearch" required>
               <input type="submit" value="Delete" />
            </form>`;
@@ -431,12 +436,15 @@ function Control_DB(elem)
         if(fun == 'Add')
         {
           sender.innerHTML =
-          `<form action="${LINK}" method="post">
+          `${formPt}
               <input class="TSearch" type="text" name="F_Name" placeholder="First Name" class="IcoSearch" required>
               <input class="TSearch" type="text" name="S_Name" placeholder="Second Name" class="IcoSearch" required>
               <input class="TSearch" type="text" name="Fa_Name" placeholder="Father Name" class="IcoSearch" required>
-              <input class="TSearch" type="text" name="Sex" placeholder="Sex" class="IcoSearch" required>
-              <input class="TSearch" type="text" name="Age" placeholder="Age" class="IcoSearch" required>
+              <select class="TSearch" name="Sex">
+                  <option value="F">Female</option>
+                  <option value="M">Male</option>
+              </select>
+              <input class="TSearch" type="number" name="Age" max="100" min="0" placeholder="Age" class="IcoSearch" required>
               <input class="TSearch" type="text" name="User_Type" placeholder="Type" class="IcoSearch" required>
               <input type="submit" value="Input" />
            </form>`;
@@ -444,21 +452,24 @@ function Control_DB(elem)
         else if(fun == 'Del')
         {
           sender.innerHTML =
-          `<form action="${LINK}" method="post">
-              <input class="TSearch" type="text" name="Id_User" placeholder="Buyer ID" class="IcoSearch" required>
+          `${formPt}
+              <input class="TSearch" type="number" min="1" name="Id_User" placeholder="Buyer ID" class="IcoSearch" required>
               <input type="submit" value="Delete" />
            </form>`;
         }
         if(fun == 'Update')
         {
           sender.innerHTML =
-          `<form action="${LINK}" method="post">
-              <input class="TSearch" type="text" name="Id_User" placeholder="Buyer ID" class="IcoSearch" required>
+          `${formPt}
+              <input class="TSearch" type="number" min="1" name="Id_User" placeholder="Buyer ID" class="IcoSearch" required>
               <input class="TSearch" type="text" name="F_Name" placeholder="First Name" class="IcoSearch" required>
               <input class="TSearch" type="text" name="S_Name" placeholder="Second Name" class="IcoSearch" required>
               <input class="TSearch" type="text" name="Fa_Name" placeholder="Father Name" class="IcoSearch" required>
-              <input class="TSearch" type="text" name="Sex" placeholder="Sex" class="IcoSearch" required>
-              <input class="TSearch" type="text" name="Age" placeholder="Age" class="IcoSearch" required>
+              <select class="TSearch" name="Sex">
+                  <option value="F">Female</option>
+                  <option value="M">Male</option>
+              </select>
+              <input class="TSearch" type="number" name="Age" max="100" min="0" placeholder="Age" class="IcoSearch" required>
               <input class="TSearch" type="text" name="User_Type" placeholder="Type" class="IcoSearch" required>
               <input type="submit" value="Input" />
            </form>`;
@@ -469,9 +480,41 @@ function Control_DB(elem)
 
 function submitHandler(form)
 {
-  alert('submit');
-  form.submit().then(res => {checkErrors(res);});
+    form.submit().then(res => {checkErrors(res);});
   //form.submit().then(res => {checkErrors(res);}); //Problem With Error Catching, not output error in index
+}
+
+let SelOpt = '';
+const OptLINK = 'http://localhost:3000/api/opt';
+function SelOptions(select, sh)//Not working
+{
+    let opts = '';
+    if(sh == ' ')
+      sh = 'no';
+    let LINK = `${OptLINK}/${select}/${sh}`;
+    fetch(LINK).then(res => res.json()).then(res =>
+    {
+      checkErrors(res);
+
+      res.forEach(row =>
+      {
+        let rowN;
+        for (key in row)
+            rowN=(row[key]);
+        opts+= `<option value="${rowN}">${rowN}</option>`;
+      })
+      SelOpt = opts;
+      GetOpt(opts);
+      return opts;
+
+    });
+    return opts;
+}
+
+function GetOpt(mess)
+{
+  console.log('Get: ',mess);
+  SelOpt = mess;
 }
 
 const importLINK = 'http://localhost:3000/import';

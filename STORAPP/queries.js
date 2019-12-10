@@ -23,6 +23,12 @@ class DB {
         return connectionPool.then(pool => pool.query(`Exec ${tab} ${order} ${end}, ${start}`));
     }
 
+    GetOpt(tab, sh)
+    {
+        console.log(`Exec ${tab} ${sh}`);
+        return connectionPool.then(pool => pool.query(`Exec ${tab} ${sh}`));
+    }
+
     Exp_Imp(exec)
     {
         console.log(`Exec ${exec}`);

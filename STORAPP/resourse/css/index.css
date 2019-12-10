@@ -81,6 +81,15 @@ img
     margin-top: 8%;
 
 }
+.TSearch select:focus
+{
+	background: #d2d9dd;
+}
+.TSearch select
+{
+	-webkit-appearance: menulist-button;
+	height:35px;
+}
 .TSearch
 {
     margin-top: 1%;

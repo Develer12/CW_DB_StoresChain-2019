@@ -104,7 +104,24 @@ app.get('/api/:tab/:end/:st/:order', (req, res) =>
         {
             res.statusCode = 400;
             res.json({error: String(error)});
-        });});
+        });
+});
+
+
+//------------------Get Def value for option------------------------------
+app.get('/api/opt/:tab/:sh', (req, res) =>
+{
+    console.log(`Get Tab: /api/opt/${req.params.tab}/${req.params.sh}`);
+    let o = req.params.sh;
+    if(o == 'no') o = ' ';
+    DB.GetOpt(req.params.tab, o).then(records =>
+    {res.json(records.recordset);}).catch(error =>
+        {
+            res.statusCode = 400;
+            res.json({error: String(error)});
+        });
+});
+
 
 /*
 function getHand(req, res)
