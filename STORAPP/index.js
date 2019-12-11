@@ -114,29 +114,26 @@ app.get('/api/opt/:tab/:sh', (req, res) =>
     console.log(`Get Tab: /api/opt/${req.params.tab}/${req.params.sh}`);
     let o = req.params.sh;
     if(o == 'no') o = ' ';
+    else o = "'"+o+"'";
     DB.GetOpt(req.params.tab, o).then(records =>
-    {res.json(records.recordset);}).catch(error =>
+    {
+      let resopt = records.recordset;
+      let opts = '';
+      resopt.forEach(row =>
+      {
+        let rowN;
+        for (key in row)
+            rowN=(row[key]);
+        opts+= `<option value="${rowN}">${rowN}</option>`;
+      });
+      res.json(opts);
+    }).catch(error =>
         {
             res.statusCode = 400;
             res.json({error: String(error)});
         });
 });
 
-
-/*
-function getHand(req, res)
-{
-    let o = req.params.order;
-    if(o == 'no') o = ' ';
-    else o = "'"+o+"',";
-    DB.Get(req.params.tab, req.params.end, req.params.st, o).then(records =>
-    {res.json(records.recordset);}).catch(error =>
-        {
-            res.statusCode = 400;
-            res.json({error: String(error)});
-        });
-}
-*/
 
 //-----------------------------------------------------------
 //-----------------------------------------------------------
@@ -178,6 +175,7 @@ app.post('/control/:fun/:exec', urlencodedParser, (req, res) =>
     let json = req.body;
     let Exec = req.params.exec+req.params.fun;
     console.log(`${Exec} in DB`);
+    console.log(json);
     for (key in json)
     {
       if(key == 'BarCode' || key == 'Depart' || key == 'Type')

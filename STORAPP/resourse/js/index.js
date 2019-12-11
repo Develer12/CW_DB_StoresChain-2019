@@ -283,6 +283,12 @@ function Import(elem)
 }
 */
 
+function GetOpt(elem)
+{
+  let e = document.getElementById(elem.id)
+  return e.options[e.selectedIndex].value;
+}
+
 const controlLINK = 'http://localhost:3000/control';
 let sender = ' ';
 function Control_DB(elem)
@@ -295,14 +301,21 @@ function Control_DB(elem)
     let formPt = `<form onsubmit="submitHandler(this); return false;" action="${LINK}" method="post">`;
     if(Tab == 'SProdOrder')
     {
-        if(fun == 'Add' || fun == 'Update')
+        if(fun == 'Add' || fun == 'Update') //Don't work, not send volume
         {
+          //GetDepOpt();
           sender.innerHTML =
           `${formPt}
               <input class="TSearch" type="text" name="BarCode" placeholder="BarCode" class="IcoSearch" required>
               <input class="TSearch" type="text" name="Name" placeholder="Name" class="IcoSearch" required>
-              <input class="TSearch" type="text" name="Type" placeholder="Type" class="IcoSearch" required>
-              <input class="TSearch" type="text" name="Depart" placeholder="Department" class="IcoSearch" required>
+              <select id="OptProdType" class="TSearch" name="Type">
+                  <option selected="selected" class="DefOpt">Product Type</option>
+                  <optgroup id="OptProdTypeD" label="Product Type"><optgroup>
+              </select>
+              <select onchange="SelOptions('OptProdType', GetOpt(this))" id="OptDepart" class="TSearch" name="Depart" placeholder="Department">
+                  <option selected="selected" class="DefOpt">Department</option>
+                  ${SelOptions('OptDepart', ' ')}
+              </select>
               <input class="TSearch" type="text" name="Purch" placeholder="Purchase Price" class="IcoSearch" required>
               <input class="TSearch" type="text" name="Sell" placeholder="Sell Price" class="IcoSearch" required>
               <input class="TSearch" type="number" min="1" name="Weight" placeholder="Weight" class="IcoSearch" required>
@@ -328,7 +341,10 @@ function Control_DB(elem)
               <input class="TSearch" type="text" name="F_Name" placeholder="First Name" class="IcoSearch" required>
               <input class="TSearch" type="text" name="S_Name" placeholder="Second Name" class="IcoSearch" required>
               <input class="TSearch" type="text" name="Fa_Name" placeholder="Father Name" class="IcoSearch" required>
-              <input class="TSearch" type="text" name="Post" placeholder="Post" class="IcoSearch" required>
+              <select id="OptPost" class="TSearch" name="Post">
+                  <option selected="selected" class="DefOpt">Post</option>
+                  ${SelOptions('OptPost', ' ')}
+              </select>
               <select class="TSearch" name="Sex">
                   <option value="F">Female</option>
                   <option value="M">Male</option>
@@ -336,8 +352,14 @@ function Control_DB(elem)
               <input class="TSearch" type="number" name="Age" max="100" min="16" placeholder="Age" class="IcoSearch" required>
               <input class="TSearch" type="number" name="Exp" max="84" min="0" placeholder="Experience" class="IcoSearch" required>
               <input class="TSearch" type="text" name="Store" placeholder="Store" class="IcoSearch" required>
-              <input class="TSearch" type="text" name="Country" placeholder="Country" class="IcoSearch" required>
-              <input class="TSearch" type="text" name="Depart" placeholder="Department" class="IcoSearch" required>
+              <select id="OptCountry" class="TSearch" name="Country">
+                  <option selected="selected" class="DefOpt">Country</option>
+                  ${SelOptions('OptCountry', ' ')}
+              </select>
+              <select id="OptDepart" class="TSearch" name="Depart" placeholder="Department">
+                  <option selected="selected" class="DefOpt">Department</option>
+                  ${SelOptions('OptDepart', ' ')}
+              </select>
               <input type="submit" value="Input" />
           </form>`;
       }
@@ -349,7 +371,10 @@ function Control_DB(elem)
             <input class="TSearch" type="text" name="F_Name" placeholder="First Name" class="IcoSearch" required>
             <input class="TSearch" type="text" name="S_Name" placeholder="Second Name" class="IcoSearch" required>
             <input class="TSearch" type="text" name="Fa_Name" placeholder="Father Name" class="IcoSearch" required>
-            <input class="TSearch" type="text" name="Post" placeholder="Post" class="IcoSearch" required>
+            <select id="OptPost" class="TSearch" name="Post">
+                <option selected="selected" class="DefOpt">Post</option>
+                ${SelOptions('OptPost', ' ')}
+            </select>
             <select class="TSearch" name="Sex">
                 <option value="F">Female</option>
                 <option value="M">Male</option>
@@ -357,8 +382,14 @@ function Control_DB(elem)
             <input class="TSearch" type="number" name="Age" max="100" min="16" placeholder="Age" class="IcoSearch" required>
             <input class="TSearch" type="number" name="Exp" max="84" min="0" placeholder="Experience" class="IcoSearch" required>
             <input class="TSearch" type="text" name="Store" placeholder="Store" class="IcoSearch" required>
-            <input class="TSearch" type="text" name="Country" placeholder="Country" class="IcoSearch" required>
-            <input class="TSearch" type="text" name="Depart" placeholder="Department" class="IcoSearch" required>
+            <select id="OptCountry" class="TSearch" name="Country">
+                <option selected="selected" class="DefOpt">Country</option>
+                ${SelOptions('OptCountry', ' ')}
+            </select>
+            <select id="OptDepart" class="TSearch" name="Depart" placeholder="Department">
+                <option selected="selected" class="DefOpt">Department</option>
+                ${SelOptions('OptDepart', ' ')}
+            </select>
             <input type="submit" value="Input" />
         </form>`;
     }
@@ -378,10 +409,16 @@ function Control_DB(elem)
           sender.innerHTML =
           `${formPt}
               <input class="TSearch" type="text" name="Store" placeholder="Store" class="IcoSearch" required>
-              <input class="TSearch" type="text" name="Country" placeholder="Country" class="IcoSearch" required>
+              <select id="OptCountry" class="TSearch" name="Country">
+                  <option selected="selected" class="DefOpt">Country</option>
+                  ${SelOptions('OptCountry', ' ')}
+              </select>
               <input class="TSearch" type="text" name="Town" placeholder="Town" class="IcoSearch" required>
               <input class="TSearch" type="text" name="Addr" placeholder="Address" class="IcoSearch" required>
-              <input class="TSearch" type="text" name="Type" placeholder="Type" class="IcoSearch" required>
+              <select id="OptStoreType" class="TSearch" name="Type">
+                  <option selected="selected" class="DefOpt">Store Type</option>
+                  ${SelOptions('OptStoreType', ' ')}
+              </select>
               <input class="TSearch" type="text" name="Size" placeholder="Size" class="IcoSearch" required>
               <input type="submit" value="Input" />
           </form>`;
@@ -400,10 +437,16 @@ function Control_DB(elem)
             `${formPt}
                 <input class="TSearch" type="text" name="Id_Store" placeholder="ID Store" class="IcoSearch" required>
                 <input class="TSearch" type="text" name="Store" placeholder="Store" class="IcoSearch" required>
-                <input class="TSearch" type="text" name="Country" placeholder="Country" class="IcoSearch" required>
+                <select id="OptCountry" class="TSearch" name="Country">
+                    <option selected="selected" class="DefOpt">Country</option>
+                    ${SelOptions('OptCountry', ' ')}
+                </select>
                 <input class="TSearch" type="text" name="Town" placeholder="Town" class="IcoSearch" required>
                 <input class="TSearch" type="text" name="Addr" placeholder="Address" class="IcoSearch" required>
-                <input class="TSearch" type="text" name="Type" placeholder="Type" class="IcoSearch" required>
+                <select id="OptStoreType" class="TSearch" name="Type">
+                    <option selected="selected" class="DefOpt">Store Type</option>
+                    ${SelOptions('OptStoreType', ' ')}
+                </select>
                 <input class="TSearch" type="text" name="Size" placeholder="Size" class="IcoSearch" required>
                 <input type="submit" value="Input" />
             </form>`;
@@ -445,7 +488,10 @@ function Control_DB(elem)
                   <option value="M">Male</option>
               </select>
               <input class="TSearch" type="number" name="Age" max="100" min="0" placeholder="Age" class="IcoSearch" required>
-              <input class="TSearch" type="text" name="User_Type" placeholder="Type" class="IcoSearch" required>
+              <select id="OptUserType" class="TSearch" name="Type">
+                  <option selected="selected" class="DefOpt">User Type</option>
+                  ${SelOptions('OptUserType', ' ')}
+              </select>
               <input type="submit" value="Input" />
            </form>`;
         }
@@ -470,7 +516,10 @@ function Control_DB(elem)
                   <option value="M">Male</option>
               </select>
               <input class="TSearch" type="number" name="Age" max="100" min="0" placeholder="Age" class="IcoSearch" required>
-              <input class="TSearch" type="text" name="User_Type" placeholder="Type" class="IcoSearch" required>
+              <select id="OptUserType" class="TSearch" name="Type">
+                  <option selected="selected" class="DefOpt">User Type</option>
+                  ${SelOptions('OptUserType', ' ')}
+              </select>
               <input type="submit" value="Input" />
            </form>`;
         }
@@ -480,42 +529,41 @@ function Control_DB(elem)
 
 function submitHandler(form)
 {
-    form.submit().then(res => {checkErrors(res);});
+    form.submit();
   //form.submit().then(res => {checkErrors(res);}); //Problem With Error Catching, not output error in index
 }
 
-let SelOpt = '';
 const OptLINK = 'http://localhost:3000/api/opt';
-function SelOptions(select, sh)//Not working
+function SelOptions(select, sh)
 {
-    let opts = '';
+    //let opts = '';
+
     if(sh == ' ')
       sh = 'no';
+
     let LINK = `${OptLINK}/${select}/${sh}`;
     fetch(LINK).then(res => res.json()).then(res =>
     {
       checkErrors(res);
+      let container;
 
-      res.forEach(row =>
+      if(select == 'OptProdType')
       {
-        let rowN;
-        for (key in row)
-            rowN=(row[key]);
-        opts+= `<option value="${rowN}">${rowN}</option>`;
-      })
-      SelOpt = opts;
-      GetOpt(opts);
-      return opts;
+          container = document.getElementById(select+'D');
+          container.innerHTML = ' ';
+      }
+      else
+        container = document.getElementById(select);
 
+      container.innerHTML += res;
+
+      //Cannot return value, why?
+      /*opts = res;
+      console.log('get' , opts);
+      return opts;*/
     });
-    return opts;
 }
 
-function GetOpt(mess)
-{
-  console.log('Get: ',mess);
-  SelOpt = mess;
-}
 
 const importLINK = 'http://localhost:3000/import';
 function Import(elem)
