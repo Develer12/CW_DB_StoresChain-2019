@@ -48,3 +48,10 @@ AS
 Begin
 	SELECT Admin_Type FROM TYPE_ADMIN
 End;
+
+go
+Create Procedure OptCountry
+AS
+Begin
+	SELECT distinct County FROM STORES;
+End;
