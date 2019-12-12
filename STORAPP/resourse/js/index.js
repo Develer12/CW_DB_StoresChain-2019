@@ -303,7 +303,6 @@ function Control_DB(elem)
     {
         if(fun == 'Add' || fun == 'Update') //Don't work, not send volume
         {
-          //GetDepOpt();
           sender.innerHTML =
           `${formPt}
               <input class="TSearch" type="text" name="BarCode" placeholder="BarCode" class="IcoSearch" required>
@@ -319,7 +318,7 @@ function Control_DB(elem)
               <input class="TSearch" type="text" name="Purch" placeholder="Purchase Price" class="IcoSearch" required>
               <input class="TSearch" type="text" name="Sell" placeholder="Sell Price" class="IcoSearch" required>
               <input class="TSearch" type="number" min="1" name="Weight" placeholder="Weight" class="IcoSearch" required>
-              <input class="TSearch" type="number" min="1" placeholder="Volume" class="IcoSearch" required>
+              <input class="TSearch" type="number" min="1" name="Volume" placeholder="Volume" class="IcoSearch" required>
               <input type="submit" value="Input" />
            </form>`;
         }
