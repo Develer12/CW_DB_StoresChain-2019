@@ -109,6 +109,24 @@ Begin
 End;
 
 
+--Watch all Admins
+go
+Create Procedure SAdmin
+	@end int,
+	@start int
+AS
+Begin
+	WITH num_row AS
+	(
+		SELECT row_number() OVER (ORDER BY Admin_Id DESC) as nom , 		
+		Admin_Id, Admin_Login,Admin_Type,EMPL_Id FROM STORE_ADMIN u
+		LEFT OUTER JOIN
+		TYPE_ADMIN  t ON t.Type_Id = u.Admin_Type_Id
+	) 
+	SELECT * FROM num_row
+	WHERE nom BETWEEN @start AND @end;
+End;
+
 --Output user basket
 go
 Create Procedure OutBasket

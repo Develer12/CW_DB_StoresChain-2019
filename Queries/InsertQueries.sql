@@ -242,3 +242,51 @@ AS
 Begin
 	Delete top(1) from USER_BASKET where Product = (select Prod_Num from PRODUCTS where Prod_Id = @Id) and Id_User = @User;
 End;
+
+
+----------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------
+
+--Insert inside Admin 
+go
+Create Procedure SAdminAdd
+    @Login nvarchar(13),
+    @Pass nvarchar(30),
+    @Type nvarchar(30),
+    @EmplId int
+AS
+Begin
+	Insert into STORE_ADMIN(Admin_Login, Admin_Pass,Admin_Type_Id,EMPL_Id)
+	values(@Login, @Pass, (select Type_Id from TYPE_ADMIN where Admin_Type = @Type), @EmplId);
+End;
+
+
+--Delete from Admin 
+go
+create Procedure SAdminDel
+		@Id int
+AS
+Begin
+	Delete from STORE_ADMIN where Admin_Id = @Id;
+End;
+
+--Update User
+go
+Create Procedure SAdminUpdate
+	@Id int,
+    @Login nvarchar(13),
+    @Pass nvarchar(30),
+    @Type nvarchar(30),
+    @EmplId int
+AS
+Begin
+	Update STORE_ADMIN
+	SET Admin_Login = @Login,
+	Admin_Pass = @Pass,
+	Admin_Type_Id = (select Type_Id from TYPE_ADMIN where Admin_Type = @Type),
+	EMPL_Id = @EmplId
+	where Admin_Id = @Id;
+End;
+
+----------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------
