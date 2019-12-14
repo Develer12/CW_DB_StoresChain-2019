@@ -83,13 +83,6 @@ app.post('/api/login', urlencodedParser, (req, res) =>
 
 });
 
-//-----LogOut------
-app.get('/LogOut', (req, res) =>
-{
-    console.log('User LogOut');
-    res.sendFile(__dirname + '/login.html');
-});
-
 //-----------------------------------------------------------
 //-----------------------------------------------------------
 //------------------Get Table------------------------------

@@ -193,6 +193,15 @@ function TagTab(elem)
                  </tr>`;
         order = 'no';
       break;
+      case 'SAdmin':
+        defTR = `<tr>
+                  <td>Admin ID</td>
+                  <td>Login</td>
+                  <td>Type</td>
+                  <td>Employee ID</td>
+                 </tr>`;
+        order = 'no';
+      break;
   }
   get_tab();
   searchF.remove();
@@ -233,6 +242,8 @@ async function get_tab()
         case 'FindProd': pulp.innerHTML = `<td>${row.Prod_Id}</td><td>${row.Prod_Name}</td><td>${row.Prod_Type}</td><td>${row.Depart}</td><td>${row.Price_Purchase}</td><td>${row.Price_Sell}</td><td>${row.Weight}</td><td>${row.Volume}</td>`;
             break;
         case 'SUser': pulp.innerHTML = `<td>${row.Id_User}</td><td>${row.Name_First}</td><td>${row.Name_Sec}</td><td>${row.Name_Father}</td><td>${row.Sex}</td><td>${row.Age}</td><td>${row.Type_User}</td><td>${row.Sale_Size}</td>`;
+            break;
+        case 'SAdmin': pulp.innerHTML = `<td>${row.Admin_Id}</td><td>${row.Admin_Login}</td><td>${row.Admin_Type}</td><td>${row.EMPL_Id}</td>`;
             break;
         case 'SEmpl': pulp.innerHTML = `<td>${row.Id_Empl}</td><td>${row.Name_First}</td><td>${row.Name_Sec}</td><td>${row.Name_Father}</td><td>${row.Post}</td><td>${row.Sex}</td><td>${row.Age}</td><td>${row.Exp}</td>`+
                       `<td>${row.Name_Store}</td><td>${row.County}</td><td>${row.Depart}</td>`;
@@ -523,6 +534,32 @@ function Control_DB(elem)
            </form>`;
         }
     }
+    else if(Tab == 'SAdmin')
+    {
+      if(fun == 'Add' || fun == 'Update')
+      {
+        sender.innerHTML =
+        `${formPt}
+            <input class="TSearch" type="number" name="Admin_Id" min="1" placeholder="Admin ID" class="IcoSearch" required>
+            <input class="TSearch" type="text" name="Login" placeholder="Login" class="IcoSearch" required>
+            <input class="TSearch" type="text" name="Password" placeholder="Password" class="IcoSearch" required>
+            <select id="OptAdminType" class="TSearch" name="Admin_Type">
+                <option selected="selected" class="DefOpt">Admin Type</option>
+                ${SelOptions('OptAdminType', ' ')}
+            </select>
+            <input class="TSearch" type="number" min="1" name="Id_Empl" placeholder="Employee ID" class="IcoSearch" required>
+            <input type="submit" value="Input" />
+         </form>`;
+      }
+      else if(fun == 'Del')
+      {
+        sender.innerHTML =
+        `${formPt}
+            <input class="TSearch" type="number" name="Admin_Id" min="1" placeholder="Admin ID" class="IcoSearch" required>
+            <input type="submit" value="Delete" />
+         </form>`;
+      }
+    }
      db_c.append(sender);
 }
 
@@ -574,8 +611,8 @@ function Import(elem)
 function LogOut()
 {
     console.log('User LogOut');
-    let LINK = 'http://localhost:3000/LogOut';
-    fetch(LINK).then(res => {checkErrors(res);});
+    document.getElementsByTagName('html').innerHTML=' ';
+    document.location.replace("http://localhost:3000/");
 }
 
 function checkErrors(res)
