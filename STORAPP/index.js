@@ -4,7 +4,9 @@ const fs = require('fs');
 var bodyParser = require('body-parser');
 //DB handler
 const Db = require('./queries');
-const DB = new Db();
+let DB = new Db();
+const ImportDB = require('./ImDB');
+const ImDB = new ImportDB();
 const urlencodedParser = bodyParser.urlencoded({extended: false});
 
 
@@ -151,12 +153,25 @@ app.get('/import/:type', (req, res) =>
     console.log('Import' + req.params.type);
     var filePathDB = '../backups/STORES_CHAIN.bak';
     var filePathXML = '../backups/Import.xml';
-    if ((fs.existsSync(filePathDB) && req.params.type =='ImDB') || (req.params.type =='ImProdfromXml' && fs.existsSync(filePathXML)))
+    if ((req.params.type =='ImProdfromXml' && fs.existsSync(filePathXML)))
+    {
       DB.Exp_Imp(req.params.type).catch(error =>
       {
           res.statusCode = 400;
           res.json({error: String(error)});
       });
+    }
+    if ((fs.existsSync(filePathDB) && req.params.type =='ImDB'))
+    {
+      console.log('Import DB with using master');
+      ImDB.Exp_Imp(req.params.type).catch(error =>
+      {
+          res.statusCode = 400;
+          res.json({error: String(error)});
+      });
+      DB = new Db();
+      console.log("Close");
+    }
     else if(!fs.existsSync(filePathDB)) console.log('BAK file to restore DB not exists');
     else if(!fs.existsSync(filePathXML)) console.log('XML file to import products not exists');
 });

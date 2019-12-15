@@ -628,6 +628,7 @@ function Import(elem)
 {
   let LINK = `${importLINK}/${elem.id}`;
   fetch(LINK).then(res => res.json()).then(res => {checkErrors(res);});
+  LogOut();
 }
 
 function LogOut()
