@@ -92,7 +92,7 @@ function TSearch()
       case 'OutBasket':
         defTR = `<tr>
         <td>BarCode</td>
-        <td>Count</td>
+        <td>Date Buy</td>
         <td>Name</td>
         <td>Type</td>
         <td>Department</td>
@@ -235,7 +235,7 @@ async function get_tab()
       {
         case 'SProdOrder': pulp.innerHTML = `<td>${row.Prod_Id}</td><td>${row.Prod_Name}</td><td>${row.Prod_Type}</td><td>${row.Depart}</td><td>${row.Price_Purchase}</td><td>${row.Price_Sell}</td><td>${row.Weight}</td><td>${row.Volume}</td>`;
             break;
-        case 'OutBasket': pulp.innerHTML = `<td>${row.Prod_Id}</td><td>${row.Count}</td><td>${row.Prod_Name}</td><td>${row.Prod_Type}</td><td>${row.Depart}</td><td>${row.Price_Purchase}</td><td>${row.Price_Sell}</td><td>${row.Weight}</td><td>${row.Volume}</td>`;
+        case 'OutBasket': pulp.innerHTML = `<td>${row.Prod_Id}</td><td>${(row.Date_Buy).substr(0, 10)}</td><td>${row.Prod_Name}</td><td>${row.Prod_Type}</td><td>${row.Depart}</td><td>${row.Price_Purchase}</td><td>${row.Price_Sell}</td><td>${row.Weight}</td><td>${row.Volume}</td>`;
             break;
         case 'SStore': pulp.innerHTML = `<td>${row.Id_Store}</td><td>${row.Name_Store}</td><td>${row.County}</td><td>${row.Town}</td><td>${row.Adress}</td><td>${row.Size}</td><td>${row.Type}</td><td>${row.Workers}</td>`;
             break;
@@ -264,7 +264,7 @@ const exportLINK = 'http://localhost:3000/export';
 function Export(elem)
 {
   let LINK = `${exportLINK}/${elem.id}`;
-  fetch(LINK).then(res => {checkErrors(res);});
+  fetch(LINK).then(res => res.json()).then(res => {checkErrors(res);});
 }
 
 
@@ -309,7 +309,7 @@ function Control_DB(elem)
     sender = document.createElement('center');
     db_c.innerHTML = '';
     let LINK = `${controlLINK}/${fun}/${Tab}`;
-    let formPt = `<form onsubmit="submitHandler(this); return false;" action="${LINK}" method="post">`;
+    let formPt = `<form id="${LINK}" onsubmit="submitHandler(this); return false;">`;
     if(Tab == 'SProdOrder')
     {
         if(fun == 'Add' || fun == 'Update') //Don't work, not send volume
@@ -468,17 +468,16 @@ function Control_DB(elem)
         {
           sender.innerHTML =
           `${formPt}
-              <input class="TSearch" type="number" min="1" name="Id_User" placeholder="Buyer ID" class="IcoSearch" required>
+              <input class="TSearch" type="number" min="1" name="Id_User" id="Input_search" placeholder="Buyer ID" class="IcoSearch" required>
               <input class="TSearch" type="text" name="BarCode" placeholder="BarCode" class="IcoSearch" required>
               <input type="submit" value="Input" />
            </form>`;
-           document.getElementsByName('Id_User').value = Search_T;
         }
         else if(fun == 'Del')
         {
           sender.innerHTML =
           `${formPt}
-              <input class="TSearch" type="number" min="1" name="Id_User" placeholder="Buyer ID" class="IcoSearch" required>
+              <input class="TSearch" type="number" min="1" name="Id_User" id="Input_search" placeholder="Buyer ID" class="IcoSearch" required>
               <input class="TSearch" type="text" name="BarCode" placeholder="BarCode" class="IcoSearch" required>
               <input type="submit" value="Delete" />
            </form>`;
@@ -540,7 +539,6 @@ function Control_DB(elem)
       {
         sender.innerHTML =
         `${formPt}
-            <input class="TSearch" type="number" name="Admin_Id" min="1" placeholder="Admin ID" class="IcoSearch" required>
             <input class="TSearch" type="text" name="Login" placeholder="Login" class="IcoSearch" required>
             <input class="TSearch" type="text" name="Password" placeholder="Password" class="IcoSearch" required>
             <select id="OptAdminType" class="TSearch" name="Admin_Type">
@@ -559,14 +557,38 @@ function Control_DB(elem)
             <input type="submit" value="Delete" />
          </form>`;
       }
+      if(fun == 'Update')
+      {
+        sender.innerHTML =
+        `${formPt}
+            <input class="TSearch" type="number" name="Admin_Id" min="1" placeholder="Admin ID" class="IcoSearch" required>
+            <input class="TSearch" type="text" name="Login" placeholder="Login" class="IcoSearch" required>
+            <input class="TSearch" type="text" name="Password" placeholder="Password" class="IcoSearch" required>
+            <select id="OptAdminType" class="TSearch" name="Admin_Type">
+                <option selected="selected" class="DefOpt">Admin Type</option>
+                ${SelOptions('OptAdminType', ' ')}
+            </select>
+            <input class="TSearch" type="number" min="1" name="Id_Empl" placeholder="Employee ID" class="IcoSearch" required>
+            <input type="submit" value="Input" />
+         </form>`;
+      }
     }
      db_c.append(sender);
+     let getSearch = document.getElementById('Input_search');
+     if(getSearch)
+        getSearch.value = Search_T;
+
 }
 
 function submitHandler(form)
 {
-    form.submit();
-  //form.submit().then(res => {checkErrors(res);}); //Problem With Error Catching, not output error in index
+    let frm = new URLSearchParams(new FormData(form));
+    let formUrl = form.id;
+    fetch(formUrl,
+    {
+      method: 'post',
+      body: frm
+    }).then(res => res.json()).then(res => {checkErrors(res);});
 }
 
 const OptLINK = 'http://localhost:3000/api/opt';
@@ -605,7 +627,7 @@ const importLINK = 'http://localhost:3000/import';
 function Import(elem)
 {
   let LINK = `${importLINK}/${elem.id}`;
-  fetch(LINK).then(res => {checkErrors(res);});
+  fetch(LINK).then(res => res.json()).then(res => {checkErrors(res);});
 }
 
 function LogOut()
@@ -619,6 +641,7 @@ function checkErrors(res)
 {
   if (res.error)
   {
+    console.log("ERROR-> "+res.error);
     document.getElementById('errors').innerText = res.error;
     document.getElementById('close-error').style.display = 'block';
   }
