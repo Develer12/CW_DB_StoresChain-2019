@@ -153,7 +153,7 @@ End;
 go
 --------------------|AI BASKET|-----------------------
 --COMPLITED!!
-Create Procedure AI_BASKET AS
+Create Procedure exec AI_BASKET AS
 Begin
 DECLARE @number INT;
 
@@ -161,12 +161,11 @@ SET @number = 1;
 
 While @number <= 100000
 	BEGIN
-	Insert into USER_BASKET(Id_User,Product)
-		values(ABS(CHECKSUM(NEWID()) % (Select count(Id_User) from USERS)) + 1, ABS(CHECKSUM(NEWID()) % (Select count(Prod_Num) from PRODUCTS)) + 1);
+	Insert into USER_BASKET(Id_User,Product, Date_Buy)
+		values(ABS(CHECKSUM(NEWID()) % (Select count(Id_User) from USERS)) + 1, (ABS(CHECKSUM(NEWID()) % (Select count(Prod_Num) from PRODUCTS)) + 1), CAST(dateadd(day, -(ABS(CHECKSUM(NEWID()) % 6)), GETDATE()) AS DATE));
 	SET @number = @number + 1;
 	END;
 End;
-
 
 
 go

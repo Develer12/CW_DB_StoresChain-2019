@@ -228,8 +228,8 @@ Create Procedure OutBasketAdd
 	@Id nvarchar(13)
 AS
 Begin
-	Insert into USER_BASKET(Id_User, Product)
-	values(@User, (select Prod_Num from PRODUCTS where Prod_Id = @Id));
+	Insert into USER_BASKET(Id_User, Product, Date_Buy)
+	values(@User, (select Prod_Num from PRODUCTS where Prod_Id = @Id), CAST(GETDATE() AS DATE));
 End;
 
 
@@ -240,7 +240,9 @@ create Procedure OutBasketDel
 		@Id nvarchar(13)
 AS
 Begin
-	Delete top(1) from USER_BASKET where Product = (select Prod_Num from PRODUCTS where Prod_Id = @Id) and Id_User = @User;
+	Delete from USER_BASKET where Id_Item = (select top(1) Id_Item from USER_BASKET where 
+			Product = (select Prod_Num from PRODUCTS where Prod_Id = @Id) 
+			and Id_User = @User order by Date_Buy desc);
 End;
 
 

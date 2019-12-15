@@ -137,16 +137,16 @@ AS
 Begin
 	WITH num_row AS
 	(
-		SELECT row_number() OVER (ORDER BY Prod_Name) as nom , 		
-		Prod_Id, Prod_Name, count(u.Product) as Count, Prod_Type,Depart,Price_Purchase,Price_Sell,Weight,Volume FROM PRODUCTS p 
+		SELECT row_number() OVER (ORDER BY Date_Buy DESC) as nom , 		
+		Prod_Id, Prod_Name, Date_Buy, Prod_Type,Depart,Price_Purchase,Price_Sell,Weight,Volume FROM PRODUCTS p 
 		LEFT OUTER JOIN
 		PRODUCT_TYPE  t ON t.Prod_Type_Id = p.Type_Prod_Id
 		LEFT OUTER JOIN
 		DEPARTMENTS d ON d.Dep_Id = t.Id_Dep
 		Right OUTER JOIN
 		USER_BASKET u ON u.Product = p.Prod_Num
-		WHERE Id_User = @User
-		group by Prod_Name, Prod_Id, Prod_Type,Depart,Price_Purchase,Price_Sell,Weight,Volume
+		WHERE Id_User = 12
+		
 	) 
 	SELECT * FROM num_row
 	WHERE nom BETWEEN @start AND @end;

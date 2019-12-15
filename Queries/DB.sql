@@ -103,7 +103,8 @@ Create Table USER_BASKET
 (
 	Id_Item int identity(1,1) constraint Item_PK PRIMARY KEY,
 	Id_User int constraint USER_FK foreign key references USERS(Id_User),
-	Product int constraint PROD_FK foreign key references PRODUCTS(Prod_Num)
+	Product int constraint PROD_FK foreign key references PRODUCTS(Prod_Num),
+	Date_Buy date
 );
 
 
