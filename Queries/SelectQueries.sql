@@ -145,7 +145,7 @@ Begin
 		DEPARTMENTS d ON d.Dep_Id = t.Id_Dep
 		Right OUTER JOIN
 		USER_BASKET u ON u.Product = p.Prod_Num
-		WHERE Id_User = 12
+		WHERE Id_User = @User
 		
 	) 
 	SELECT * FROM num_row
