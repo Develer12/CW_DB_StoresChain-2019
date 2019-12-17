@@ -66,13 +66,12 @@ Create Procedure SEmplAdd
     @Sex nchar(1), 
     @Age int,
     @Exp int,
-    @Id_Store nvarchar(30),
-	@Country nvarchar(30),
+    @Id_Store int,
     @Id_Dep nvarchar(30)
 AS
 Begin
 	Insert into EMPLOYEES(Name_First, Name_Sec,Name_Father,Sex,Age,Exp, Id_Post, Id_Store, Id_Dep)
-	values(@Name_First, @Name_Sec, @Name_Father, @Sex, @Age, @Exp, (select Post_Id from POSTS where Post = @Id_Post), (select Id_Store from STORES where Name_Store = @Id_Store and County = @Country), (select Dep_Id from DEPARTMENTS where Depart = @Id_Dep));
+	values(@Name_First, @Name_Sec, @Name_Father, @Sex, @Age, @Exp, (select Post_Id from POSTS where Post = @Id_Post), @Id_Store, (select Dep_Id from DEPARTMENTS where Depart = @Id_Dep));
 End;
 
 
@@ -97,8 +96,7 @@ Create Procedure SEmplUpdate
     @Sex nchar(1), 
     @Age int,
     @Exp int,
-    @Id_Store nvarchar(30),
-	@Country nvarchar(30),
+    @Id_Store int,
     @Id_Dep nvarchar(30)
 AS
 Begin
@@ -110,7 +108,7 @@ Begin
 	Age = @Age,
 	Exp = @Exp,
 	Id_Post = (select Post_Id from POSTS where Post = @Id_Post),
-	Id_Store = (select Id_Store from STORES where Name_Store = @Id_Store and County = @Country),
+	Id_Store = @Id_Store,
 	Id_Dep = (select Dep_Id from DEPARTMENTS where Depart = @Id_Dep)
 	where Id_Empl = @Empl;
 End;
