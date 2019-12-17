@@ -185,10 +185,7 @@ app.post('/control/:fun/:exec', urlencodedParser, (req, res) =>
     console.log(`${Exec} in DB`);
     for (key in json)
     {
-      if(key == 'BarCode' || key == 'Depart' || key == 'Type')
-        param+=("'"+json[key]+"',");
-      else
-        param+=(json[key]+',');
+      param+=("'"+json[key]+"',");
     }
     param = param.slice(0, param.length-1);
     console.log(param);

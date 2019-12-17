@@ -312,7 +312,7 @@ function Control_DB(elem)
     let formPt = `<form id="${LINK}" onsubmit="submitHandler(this); return false;">`;
     if(Tab == 'SProdOrder')
     {
-        if(fun == 'Add' || fun == 'Update') //Don't work, not send volume
+        if(fun == 'Add' || fun == 'Update')
         {
           sender.innerHTML =
           `${formPt}
@@ -361,11 +361,7 @@ function Control_DB(elem)
               </select>
               <input class="TSearch" type="number" name="Age" max="100" min="16" placeholder="Age" class="IcoSearch" required>
               <input class="TSearch" type="number" name="Exp" max="84" min="0" placeholder="Experience" class="IcoSearch" required>
-              <input class="TSearch" type="text" name="Store" placeholder="Store" class="IcoSearch" required>
-              <select id="OptCountry" class="TSearch" name="Country">
-                  <option selected="selected" class="DefOpt">Country</option>
-                  ${SelOptions('OptCountry', ' ')}
-              </select>
+              <input class="TSearch" type="number" name="Id_Store" placeholder="Store ID" class="IcoSearch" required>
               <select id="OptDepart" class="TSearch" name="Depart" placeholder="Department">
                   <option selected="selected" class="DefOpt">Department</option>
                   ${SelOptions('OptDepart', ' ')}
@@ -391,11 +387,7 @@ function Control_DB(elem)
             </select>
             <input class="TSearch" type="number" name="Age" max="100" min="16" placeholder="Age" class="IcoSearch" required>
             <input class="TSearch" type="number" name="Exp" max="84" min="0" placeholder="Experience" class="IcoSearch" required>
-            <input class="TSearch" type="text" name="Store" placeholder="Store" class="IcoSearch" required>
-            <select id="OptCountry" class="TSearch" name="Country">
-                <option selected="selected" class="DefOpt">Country</option>
-                ${SelOptions('OptCountry', ' ')}
-            </select>
+            <input class="TSearch" type="number" name="Id_Store" placeholder="Store ID" class="IcoSearch" required>
             <select id="OptDepart" class="TSearch" name="Depart" placeholder="Department">
                 <option selected="selected" class="DefOpt">Department</option>
                 ${SelOptions('OptDepart', ' ')}
