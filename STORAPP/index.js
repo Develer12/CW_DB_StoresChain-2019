@@ -171,6 +171,7 @@ app.get('/import/:type', (req, res) =>
       });
       DB = new Db();
       console.log("Close");
+      server.close();
     }
     else if(!fs.existsSync(filePathDB)) console.log('BAK file to restore DB not exists');
     else if(!fs.existsSync(filePathXML)) console.log('XML file to import products not exists');

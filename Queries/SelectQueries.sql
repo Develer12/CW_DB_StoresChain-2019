@@ -58,7 +58,7 @@ Begin
 		p.Id_Store, Name_Store, County, Town, Adress, Size, s.Type, count(Id_Empl) as Workers FROM STORES p
 		LEFT OUTER JOIN
 		TYPE_STORE  s ON s.Store_Type_Id = p.Id_Type
-		right OUTER JOIN
+		Left OUTER JOIN
 		EMPLOYEES  t ON t.Id_Store = p.Id_Store
 		group by p.Id_Store, Name_Store, County, Town, Adress, Size, s.Type
 	) 

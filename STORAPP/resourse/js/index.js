@@ -620,7 +620,8 @@ function Import(elem)
 {
   let LINK = `${importLINK}/${elem.id}`;
   fetch(LINK).then(res => res.json()).then(res => {checkErrors(res);});
-  LogOut();
+  if(elem.id == 'ImDB')
+    LogOut();
 }
 
 function LogOut()
